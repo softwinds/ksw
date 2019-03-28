@@ -1,0 +1,11 @@
+=============== Mar 27, 2019 (CST) ===============
+15:43:44.132017 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:43:44.195428 db@open opening
+15:43:44.199673 version@stat F·[] S·0B[] Sc·[]
+15:43:44.220698 db@janitor F·2 G·0
+15:43:44.220774 db@open done T·25.292535ms
+17:14:44.226634 memdb@flush N·29024 S·3MiB
+17:14:44.285035 memdb@flush created L0@3 N·29024 S·688KiB "n:\x00..ail,v1016":"version,v1"
+17:14:44.285083 version@stat F·[1] S·688KiB[688KiB] Sc·[0.25]
+17:14:44.326900 memdb@flush committed F·1 T·100.186553ms
+17:14:44.328604 journal@remove removed @1
