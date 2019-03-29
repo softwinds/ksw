@@ -56,6 +56,12 @@ type Transaction struct {
 }
 
 type txdata struct {
+	//
+	DN []byte					`json:"dn"     gencodec:"required"`
+	ET []byte					`json:"et"     gencodec:"required"`
+	CAS []*common.Address       `json:"cas"     gencodec:"required"`
+	Signatures []*big.Int		`json:"sig"     gencodec:"required"`
+
 	Code         uint8           `json:"code"     gencodec:"required"` // differ txs --Agzs 09.17
 	AccountNonce uint64          `json:"nonce"    gencodec:"required"`
 	Price        *big.Int        `json:"gasPrice" gencodec:"required"`
@@ -74,6 +80,10 @@ type txdata struct {
 }
 
 type txdataMarshaling struct {
+	DN hexutil.Bytes
+	ET hexutil.Bytes
+	Signatures []*hexutil.Big
+
 	Code         uint8 // differ txs --Agzs 09.18
 	AccountNonce hexutil.Uint64
 	Price        *hexutil.Big
@@ -93,11 +103,15 @@ func NewContractCreation(nonce uint64, amount *big.Int, gasLimit uint64, gasPric
 	return newTransaction(nonce, nil, amount, gasLimit, gasPrice, data)
 }
 
-func newTransaction(nonce uint64, to *common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte) *Transaction {
+func newTransaction(nonce uint64, to *common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte,dn []byte,et []byte,cas *common.Address,sig []*big.Int) *Transaction {
 	if len(data) > 0 {
 		data = common.CopyBytes(data)
 	}
 	d := txdata{
+		DN:			  dn
+		ET:			  et
+		CAS:		  cas
+		Signatures:   sig
 		Code:         PublicTx, // default for public transaction --Agzs 09.17
 		AccountNonce: nonce,
 		Recipient:    to,
@@ -182,6 +196,10 @@ func (tx *Transaction) UnmarshalJSON(input []byte) error {
 	return nil
 }
 
+func (tx *Transaction) DN() []byte        { return tx.data.DN }
+func (tx *Transaction) ET() []byte        { return tx.data.ET }
+func (tx *Transaction) CAS() []byte        { return tx.data.CAS }
+func (tx *Transaction) Signatures() []byte        { return tx.data.Signatures }
 func (tx *Transaction) Code() uint8        { return tx.data.Code }
 func (tx *Transaction) Data() []byte       { return common.CopyBytes(tx.data.Payload) }
 func (tx *Transaction) Gas() uint64        { return tx.data.GasLimit }

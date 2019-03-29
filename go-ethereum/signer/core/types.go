@@ -62,6 +62,12 @@ type ValidationMessages struct {
 
 // SendTxArgs represents the arguments to submit a transaction
 type SendTxArgs struct {
+
+	DN *hexutil.Bytes         `json:"dn"`
+	ET *hexutil.Bytes         `json:"et"`
+	CAS []*common.Address     `json:"cas"`
+	Signatures []*hexutil.Big `json:"sig"`
+
 	From     common.MixedcaseAddress  `json:"from"`
 	To       *common.MixedcaseAddress `json:"to"`
 	Gas      hexutil.Uint64           `json:"gas"`

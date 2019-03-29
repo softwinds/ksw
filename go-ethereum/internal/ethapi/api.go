@@ -858,6 +858,11 @@ func (s *PublicBlockChainAPI) rpcOutputBlock(b *types.Block, inclTx bool, fullTx
 
 // RPCTransaction represents a transaction that will serialize to the RPC representation of a transaction
 type RPCTransaction struct {
+	DN *hexutil.Bytes         `json:"dn"`
+	ET *hexutil.Bytes         `json:"et"`
+	CAS []*common.Address     `json:"cas"`
+	Signatures []*hexutil.Big `json:"sig"`
+	
 	BlockHash        common.Hash     `json:"blockHash"`
 	BlockNumber      *hexutil.Big    `json:"blockNumber"`
 	From             common.Address  `json:"from"`
@@ -1111,6 +1116,12 @@ func (s *PublicTransactionPoolAPI) sign(addr common.Address, tx *types.Transacti
 
 // SendTxArgs represents the arguments to sumbit a new transaction into the transaction pool.
 type SendTxArgs struct {
+
+	DN *hexutil.Bytes         `json:"dn"`
+	ET *hexutil.Bytes         `json:"et"`
+	CAS []*common.Address     `json:"cas"`
+	Signatures []*hexutil.Big `json:"sig"`
+
 	From     common.Address  `json:"from"`
 	To       *common.Address `json:"to"`
 	Gas      *hexutil.Uint64 `json:"gas"`
@@ -1274,16 +1285,16 @@ func (s *PublicTransactionPoolAPI) SendBKITransaction(ctx context.Context, args 
 }
 //用户请求参数
 type userArgs struct {
+	////用户地址
+	//UA string
 	//域名
 	DN string
-	//
+	//有效期
 	ET string
+	//ca地址
 	CA []string
 }
-//请求签名
-func (s *PublicTransactionPoolAPI) AskForSign(args userArgs)  {
 
-}
 
 //=============================================================================
 
