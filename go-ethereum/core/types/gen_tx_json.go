@@ -16,6 +16,12 @@ var _ = (*txdataMarshaling)(nil)
 func (t txdata) MarshalJSON() ([]byte, error) {
 	type txdata struct {
 		Code         uint8           `json:"code"     gencodec:"required"` // differ txs --Agzs 09.17
+
+		DN hexutil.Bytes					`json:"dn"     gencodec:"required"`
+	    ET hexutil.Bytes					`json:"et"     gencodec:"required"`
+		CAS []*common.Address       `json:"cas"     gencodec:"required"`
+		Signatures []*hexutil.Big		`json:"sig"     gencodec:"required"`
+
 		AccountNonce hexutil.Uint64  `json:"nonce"    gencodec:"required"`
 		Price        *hexutil.Big    `json:"gasPrice" gencodec:"required"`
 		GasLimit     hexutil.Uint64  `json:"gas"      gencodec:"required"`
@@ -28,6 +34,13 @@ func (t txdata) MarshalJSON() ([]byte, error) {
 		Hash         *common.Hash    `json:"hash" rlp:"-"`
 	}
 	var enc txdata
+
+	enc.DN = t.DN
+	enc.ET = t.ET
+	enc.CAS = t.CAS
+	for index,sig := range t.Signatures{
+		enc.Signatures[index] = (*hexutil.Big)(sig)
+	}
 	enc.AccountNonce = hexutil.Uint64(t.AccountNonce)
 	enc.Price = (*hexutil.Big)(t.Price)
 	enc.GasLimit = hexutil.Uint64(t.GasLimit)
@@ -44,6 +57,12 @@ func (t txdata) MarshalJSON() ([]byte, error) {
 func (t *txdata) UnmarshalJSON(input []byte) error {
 	type txdata struct {
 		Code         uint8           `json:"code"     gencodec:"required"` // differ txs --Agzs 09.18
+		DN hexutil.Bytes					`json:"dn"     gencodec:"required"`
+	    ET hexutil.Bytes					`json:"et"     gencodec:"required"`
+		CAS []*common.Address       `json:"cas"     gencodec:"required"`
+		Signatures []*hexutil.Big		`json:"sig"     gencodec:"required"`
+		
+
 		AccountNonce *hexutil.Uint64 `json:"nonce"    gencodec:"required"`
 		Price        *hexutil.Big    `json:"gasPrice" gencodec:"required"`
 		GasLimit     *hexutil.Uint64 `json:"gas"      gencodec:"required"`
@@ -97,5 +116,25 @@ func (t *txdata) UnmarshalJSON(input []byte) error {
 	if dec.Hash != nil {
 		t.Hash = dec.Hash
 	}
+	
+	if dec.DN != nil{
+		t.DN = dec.DN
+	}
+	if dec.ET != nil{
+		t.ET = dec.ET
+	}
+	if dec.CAS != nil{
+		
+		for index,dn := range dec.CAS{
+			t.CAS[index] = dn
+		}
+	}
+	if dec.Signatures != nil{
+		for index,sig := range dec.Signatures{
+			t.Signatures[index] = (*big.Int)(sig)
+		}
+	}
+
+
 	return nil
 }

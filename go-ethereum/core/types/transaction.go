@@ -82,6 +82,7 @@ type txdata struct {
 type txdataMarshaling struct {
 	DN hexutil.Bytes
 	ET hexutil.Bytes
+	CAS []*common.Address
 	Signatures []*hexutil.Big
 
 	Code         uint8 // differ txs --Agzs 09.18
@@ -95,23 +96,23 @@ type txdataMarshaling struct {
 	S            *hexutil.Big
 }
 
-func NewTransaction(nonce uint64, to common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte) *Transaction {
-	return newTransaction(nonce, &to, amount, gasLimit, gasPrice, data)
+func NewTransaction(nonce uint64, to common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte,dn []byte,et []byte,cas []*common.Address,sig []*big.Int) *Transaction {
+	return newTransaction(nonce, &to, amount, gasLimit, gasPrice, data,dn ,et ,cas ,sig)
 }
 
-func NewContractCreation(nonce uint64, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte) *Transaction {
-	return newTransaction(nonce, nil, amount, gasLimit, gasPrice, data)
+func NewContractCreation(nonce uint64, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte,dn []byte,et []byte,cas []*common.Address,sig []*big.Int) *Transaction {
+	return newTransaction(nonce, nil, amount, gasLimit, gasPrice, data,dn ,et ,cas ,sig)
 }
 
-func newTransaction(nonce uint64, to *common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte,dn []byte,et []byte,cas *common.Address,sig []*big.Int) *Transaction {
+func newTransaction(nonce uint64, to *common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte,dn []byte,et []byte,cas []*common.Address,sig []*big.Int) *Transaction {
 	if len(data) > 0 {
 		data = common.CopyBytes(data)
 	}
 	d := txdata{
-		DN:			  dn
-		ET:			  et
-		CAS:		  cas
-		Signatures:   sig
+		DN:			  dn,
+		ET:			  et,
+		CAS:		  cas,
+		Signatures:   sig,
 		Code:         PublicTx, // default for public transaction --Agzs 09.17
 		AccountNonce: nonce,
 		Recipient:    to,
@@ -198,8 +199,22 @@ func (tx *Transaction) UnmarshalJSON(input []byte) error {
 
 func (tx *Transaction) DN() []byte        { return tx.data.DN }
 func (tx *Transaction) ET() []byte        { return tx.data.ET }
-func (tx *Transaction) CAS() []byte        { return tx.data.CAS }
-func (tx *Transaction) Signatures() []byte        { return tx.data.Signatures }
+func (tx *Transaction) Cas() []byte{
+	var result []byte
+	for _,ca := range tx.data.CAS{
+		for _,b :=range ca{
+			result = append(result,b)
+		}
+	}
+	return result
+}
+func (tx *Transaction) Signatures() *big.Int{
+	var result *big.Int
+	for _,d := range tx.data.Signatures{
+		result = result.Add(result,d)
+	}
+	return result
+}       
 func (tx *Transaction) Code() uint8        { return tx.data.Code }
 func (tx *Transaction) Data() []byte       { return common.CopyBytes(tx.data.Payload) }
 func (tx *Transaction) Gas() uint64        { return tx.data.GasLimit }
@@ -432,6 +447,13 @@ type Message struct {
 	to         *common.Address
 	from       common.Address
 	code       uint8
+	DN 		   []byte
+	ET 		   []byte
+	CAS			[]*common.Address
+	Signatures  []*big.Int
+
+
+
 	nonce      uint64
 	amount     *big.Int
 	gasLimit   uint64
@@ -440,11 +462,15 @@ type Message struct {
 	checkNonce bool
 }
 
-func NewMessage(from common.Address, to *common.Address, code uint8, nonce uint64, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte, checkNonce bool) Message {
+func NewMessage(from common.Address, to *common.Address, code uint8, nonce uint64, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte, checkNonce bool,dn []byte,et []byte,cas []*common.Address,sig []*big.Int) Message {
 	return Message{
 		from:       from,
 		to:         to,
 		code:       code, // differ txs --Agzs 09.18
+		DN:			  dn,
+		ET:			  et,
+		CAS:		  cas,
+		Signatures:   sig,
 		nonce:      nonce,
 		amount:     amount,
 		gasLimit:   gasLimit,
@@ -463,3 +489,21 @@ func (m Message) Nonce() uint64        { return m.nonce }
 func (m Message) Data() []byte         { return m.data }
 func (m Message) CheckNonce() bool     { return m.checkNonce }
 func (m Message) Code() uint8          { return m.code }
+func (m Message) Dn() []byte          { return m.DN }
+func (m Message) Et() []byte          { return m.ET }
+func (m Message) Cas() []byte{
+	var result []byte
+	for _,ca := range m.CAS{
+		for _,b :=range ca{
+			result = append(result,b)
+		}
+	}
+	return result
+}
+func (m Message) Sign() *big.Int{
+	var result *big.Int
+	for _,d := range m.Signatures{
+		result = result.Add(result,d)
+	}
+	return result
+}  
