@@ -1,3 +1,8 @@
 admin.addPeer("enode://23186d28541bb9855ca4073b4c677bb7343154f479b0540ca5588ef986f007661819b0172cd1f0995dcadde49fc7dc28413c6a379145c70566a53d3bff3c21fe@127.0.0.1:2001")
 eth.sendBKITransaction({from:eth.accounts[0],to:"0xabcee288ce19ee236627abc82bcf9fbe17241cb6",value:web3.toWei(0.05,"ether")})
 eth.getTransaction("0x56b446118b4966ed3a0091465bd620e87c9e97186e1102405b2d9eb33a0b981d")
+eth.sendBKITransaction({from:eth.accounts[0],to:"0xabcee288ce19ee236627abc82bcf9fbe17241cb6",value:web3.toWei(0.05,"ether")})
+eth.getTransaction("0xb5bd356bc5b262d54a44b9a965fc9b0ea0d2f6e9bb6569e1d45687c63570c9ee")
+eth.getBalance(eth.accounts[0])
+eth.accounts.balance
+eth.accounts.address
