@@ -98,6 +98,7 @@ func (s *stateObject) empty() bool {
 type Account struct {
 	Nonce    uint64
 	Balance  *big.Int
+	CeritifateID *big.Int
 	Root     common.Hash // merkle root of the storage trie
 	CodeHash []byte
 }
@@ -106,6 +107,9 @@ type Account struct {
 func newObject(db *StateDB, address common.Address, data Account) *stateObject {
 	if data.Balance == nil {
 		data.Balance = new(big.Int)
+	}
+	if data.CeritifateID == nil {
+		data.CeritifateID = new(big.Int)
 	}
 	if data.CodeHash == nil {
 		data.CodeHash = emptyCodeHash
@@ -269,6 +273,18 @@ func (self *stateObject) setBalance(amount *big.Int) {
 	self.data.Balance = amount
 }
 
+func (self *stateObject) SetCeritifateID(ceritifataID *big.Int) {
+	self.db.journal.append(ceritifateChange{
+		account: &self.address,
+		prev:    new(big.Int).Set(self.data.CeritifateID),
+	})
+	self.setCeritifateID(ceritifataID)
+}
+
+func (self *stateObject) setCeritifateID(ceritifataID *big.Int) {
+	self.data.CeritifateID = ceritifataID
+}
+
 // Return the gas back to the origin. Used by the Virtual machine or Closures
 func (c *stateObject) ReturnGas(gas *big.Int) {}
 
@@ -345,6 +361,10 @@ func (self *stateObject) CodeHash() []byte {
 
 func (self *stateObject) Balance() *big.Int {
 	return self.data.Balance
+}
+
+func (self *stateObject) CeritifateID() *big.Int {
+	return self.data.CeritifateID
 }
 
 func (self *stateObject) Nonce() uint64 {

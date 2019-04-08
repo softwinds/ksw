@@ -196,6 +196,15 @@ func (self *StateDB) GetBalance(addr common.Address) *big.Int {
 	return common.Big0
 }
 
+//retrieve the address of user's ceritifate from the given user's address or nil
+func (self *StateDB) GetCeritifateID(addr common.Address) *big.Int {
+	stateObject := self.getStateObject(addr)
+	if stateObject != nil {
+		return stateObject.Ceritifate()
+	}
+	return common.Big0
+}
+
 func (self *StateDB) GetNonce(addr common.Address) uint64 {
 	stateObject := self.getStateObject(addr)
 	if stateObject != nil {

@@ -5275,6 +5275,14 @@ var methods = function () {
         outputFormatter: formatters.outputBigNumberFormatter
     });
 
+    var getCeritifateID = new Method({
+        name: 'getCeritifateID',
+        call: 'eth_getCeritifateID',
+        params: 2,
+        inputFormatter: [formatters.inputAddressFormatter, formatters.inputDefaultBlockNumberFormatter],
+        outputFormatter: formatters.outputBigNumberFormatter
+    });
+
     var getStorageAt = new Method({
         name: 'getStorageAt',
         call: 'eth_getStorageAt',
@@ -5448,6 +5456,7 @@ var methods = function () {
 
     return [
         getBalance,
+        getCeritifateID,
         getStorageAt,
         getCode,
         getBlock,
