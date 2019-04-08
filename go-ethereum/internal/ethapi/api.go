@@ -609,6 +609,10 @@ type CallArgs struct {
 	GasPrice hexutil.Big     `json:"gasPrice"`
 	Value    hexutil.Big     `json:"value"`
 	Data     hexutil.Bytes   `json:"data"`
+	DN hexutil.Bytes				`json:"dn"`
+	ET hexutil.Bytes					`json:"et`
+	CAS hexutil.Bytes       `json:"cas"`
+	Signatures hexutil.Bytes		`json:"sig"`
 }
 
 func (s *PublicBlockChainAPI) doCall(ctx context.Context, args CallArgs, blockNr rpc.BlockNumber, vmCfg vm.Config, timeout time.Duration) ([]byte, uint64, bool, error) {
@@ -637,7 +641,7 @@ func (s *PublicBlockChainAPI) doCall(ctx context.Context, args CallArgs, blockNr
 	}
 
 	// Create new call message
-	msg := types.NewMessage(addr, args.To, 0, 0, args.Value.ToInt(), gas, gasPrice, args.Data, false)
+	msg := types.NewMessage(addr, args.To, 0, 0, args.Value.ToInt(), gas, gasPrice, args.Data, false,args.DN,args.ET,args.CAS,args.Signatures)
 
 	// Setup context so it may be cancelled the call has completed
 	// or, in case of unmetered gas, setup a context with a timeout.
@@ -1120,8 +1124,8 @@ type SendTxArgs struct {
 
 	DN *hexutil.Bytes         `json:"dn"`
 	ET *hexutil.Bytes         `json:"et"`
-	CAS []*common.Address     `json:"cas"`
-	Signatures []*hexutil.Big `json:"sig"`
+	CAS *hexutil.Bytes     `json:"cas"`
+	Signatures *hexutil.Bytes `json:"sig"`
 
 	From     common.Address  `json:"from"`
 	To       *common.Address `json:"to"`
@@ -1178,15 +1182,31 @@ func (args *SendTxArgs) setDefaults(ctx context.Context, b Backend) error {
 
 func (args *SendTxArgs) toTransaction() *types.Transaction {
 	var input []byte
+	var dn []byte
+	var et []byte
+	var cas []byte
+	var sig []byte
+	if args.DN != nil {
+		dn = *args.DN
+	}
+	if args.ET != nil {
+		et = *args.ET
+	}
+	if args.CAS != nil {
+		cas = *args.CAS
+	}
+	if args.Signatures != nil {
+		sig = *args.Signatures
+	}
 	if args.Data != nil {
 		input = *args.Data
 	} else if args.Input != nil {
 		input = *args.Input
 	}
 	if args.To == nil {
-		return types.NewContractCreation(uint64(*args.Nonce), (*big.Int)(args.Value), uint64(*args.Gas), (*big.Int)(args.GasPrice), input)
+		return types.NewContractCreation(uint64(*args.Nonce), (*big.Int)(args.Value), uint64(*args.Gas), (*big.Int)(args.GasPrice), input,dn,et,cas,sig)
 	}
-	return types.NewTransaction(uint64(*args.Nonce), *args.To, (*big.Int)(args.Value), uint64(*args.Gas), (*big.Int)(args.GasPrice), input)
+	return types.NewTransaction(uint64(*args.Nonce), *args.To, (*big.Int)(args.Value), uint64(*args.Gas), (*big.Int)(args.GasPrice), input,dn,et,cas,sig)
 }
 
 // submitTransaction is a helper function that submits tx to txPool and logs a message.
@@ -1283,17 +1303,6 @@ func (s *PublicTransactionPoolAPI) SendBKITransaction(ctx context.Context, args 
 		return common.Hash{}, err
 	}
 	return submitTransaction(ctx, s.b, signed)
-}
-//用户请求参数
-type userArgs struct {
-	////用户地址
-	//UA string
-	//域名
-	DN string
-	//有效期
-	ET string
-	//ca地址
-	CA []string
 }
 
 

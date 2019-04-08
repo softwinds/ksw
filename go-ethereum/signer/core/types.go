@@ -65,8 +65,8 @@ type SendTxArgs struct {
 
 	DN *hexutil.Bytes         `json:"dn"`
 	ET *hexutil.Bytes         `json:"et"`
-	CAS []*common.Address     `json:"cas"`
-	Signatures []*hexutil.Big `json:"sig"`
+	CAS *hexutil.Bytes      `json:"cas"`
+	Signatures *hexutil.Bytes  `json:"sig"`
 
 	From     common.MixedcaseAddress  `json:"from"`
 	To       *common.MixedcaseAddress `json:"to"`
@@ -95,7 +95,7 @@ func (args *SendTxArgs) toTransaction() *types.Transaction {
 		input = *args.Input
 	}
 	if args.To == nil {
-		return types.NewContractCreation(uint64(args.Nonce), (*big.Int)(&args.Value), uint64(args.Gas), (*big.Int)(&args.GasPrice), input)
+		return types.NewContractCreation(uint64(args.Nonce), (*big.Int)(&args.Value), uint64(args.Gas), (*big.Int)(&args.GasPrice), input,dn,et,cas,sig)
 	}
-	return types.NewTransaction(uint64(args.Nonce), args.To.Address(), (*big.Int)(&args.Value), (uint64)(args.Gas), (*big.Int)(&args.GasPrice), input)
+	return types.NewTransaction(uint64(args.Nonce), args.To.Address(), (*big.Int)(&args.Value), (uint64)(args.Gas), (*big.Int)(&args.GasPrice), input,dn,et,cas,sig)
 }
