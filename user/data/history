@@ -6,3 +6,7 @@ eth.getTransaction("0xb5bd356bc5b262d54a44b9a965fc9b0ea0d2f6e9bb6569e1d45687c635
 eth.getBalance(eth.accounts[0])
 eth.accounts.balance
 eth.accounts.address
+eth.getCeritifateID(eth.accounts[0])
+eth.accounts
+eth.getBalance(eth.accounts[0])
+eth.getCode(eth.accounts[0])

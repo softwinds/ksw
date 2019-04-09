@@ -20,4 +20,4 @@ true
 true
 > admin.addPeer("enode://c74d0982d08a42daf6cbfa948208f0cdfc5d821e8a0f85a325645cce59a0df8439937a3bf92594885e9c207d7bd69026716e5af2494a2e7253c9047e416b4367@127.0.0.1:2003")
 true
-
+geth --datadir ./data --networkid 55661 --port 2000 console
