@@ -1,0 +1,3 @@
+eth.accounts
+eth.getBalance(eth.accounts[0])
+eth.getCeritifateID(eth.accounts[0])
