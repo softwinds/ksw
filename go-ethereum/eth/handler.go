@@ -27,6 +27,9 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/internal/ethapi"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/accounts"
 	"github.com/ethereum/go-ethereum/consensus"
 	"github.com/ethereum/go-ethereum/consensus/misc"
 	"github.com/ethereum/go-ethereum/core"
@@ -662,6 +665,56 @@ func (pm *ProtocolManager) handleMsg(p *peer) error {
 				go pm.synchronise(p)
 			}
 		}
+
+	case msg.Code == UserToCaMsg:
+
+		var uTc *types.UToC
+
+		if err := msg.Decode(&uTc); err != nil {
+			return errResp(ErrDecode, "msg %v: %v", msg, err)
+		}
+		
+		var b ethapi.Backend
+
+		var data []byte
+		for _,bt := range uTc.DN {
+			data = append(data,bt)
+		}
+		for _,bt := range uTc.ET {
+			data = append(data,bt)
+		}
+
+		passwd := ""
+
+		var signatures []byte
+
+		for _,ca := range uTc.CAS{
+			account := accounts.Account{Address: *ca}
+
+			wallet,_ := b.AccountManager().Find(account)
+
+			msg := fmt.Sprintf("\x19Ethereum Signed Message:\n%d%s", len(data), data)
+			sig := crypto.Keccak256([]byte(msg))
+
+			signature, _ := wallet.SignHashWithPassphrase(account, passwd, sig)
+			
+			signature[64] += 27 // Transform V from 0/1 to 27/28 according to the yellow paper
+
+			for _,bt := range signature {
+				signatures = append(signatures,bt)
+			}
+
+		}
+
+		var cTu = types.CToU{DN:uTc.DN,ET:uTc.ET,CAS:uTc.CAS,Signatures:signatures}
+		p.SendCaToUser(&cTu)
+
+	case msg.Code == CaToUserMsg:
+		
+
+
+
+
 
 	case msg.Code == TxMsg:
 		// Transactions arrived, make sure we have a valid and fresh chain to handle them
