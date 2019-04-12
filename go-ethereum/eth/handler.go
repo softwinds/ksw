@@ -686,12 +686,13 @@ func (pm *ProtocolManager) handleMsg(p *peer) error {
 
 		passwd := ""
 
-		var signatures []byte
+		
 
 		for _,ca := range uTc.CAS{
 			account := accounts.Account{Address: *ca}
 
-			wallet,_ := b.AccountManager().Find(account)
+			wallet, _ := b.AccountManager().Find(account)
+			
 
 			msg := fmt.Sprintf("\x19Ethereum Signed Message:\n%d%s", len(data), data)
 			sig := crypto.Keccak256([]byte(msg))
@@ -699,18 +700,30 @@ func (pm *ProtocolManager) handleMsg(p *peer) error {
 			signature, _ := wallet.SignHashWithPassphrase(account, passwd, sig)
 			
 			signature[64] += 27 // Transform V from 0/1 to 27/28 according to the yellow paper
-
-			for _,bt := range signature {
-				signatures = append(signatures,bt)
-			}
+			
+			var cTu = types.CToU{CA:ca,Signatures:signature}
+			p.SendCaToUser(&cTu)
+			
 
 		}
 
-		var cTu = types.CToU{DN:uTc.DN,ET:uTc.ET,CAS:uTc.CAS,Signatures:signatures}
-		p.SendCaToUser(&cTu)
+		
 
 	case msg.Code == CaToUserMsg:
+		var cTu *types.CToU
+
+		if err := msg.Decode(&cTu); err != nil {
+			return errResp(ErrDecode, "msg %v: %v", msg, err)
+		}
+
+		sigMap := make(map[common.Address][]byte)
+		_,ok := sigMap[*cTu.CA]
+		if !ok{
+			sigMap[*cTu.CA] = cTu.Signatures
+		}
 		
+
+
 
 
 

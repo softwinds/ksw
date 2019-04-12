@@ -14,3 +14,13 @@
 10:04:57.901785 version@stat F·[1] S·50KiB[50KiB] Sc·[0.25]
 10:04:57.974878 db@janitor F·3 G·0
 10:04:57.974949 db@open done T·120.513096ms
+=============== Apr 11, 2019 (CST) ===============
+16:17:32.408540 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:17:32.408653 version@stat F·[1] S·50KiB[50KiB] Sc·[0.25]
+16:17:32.408801 db@open opening
+16:17:32.408847 journal@recovery F·1
+16:17:32.439664 journal@recovery recovering @3
+16:17:32.480399 memdb@flush created L0@5 N·3 S·445B "Dat..ion,v623":"cli..\x1a\xf5\xb0,v625"
+16:17:32.486071 version@stat F·[2] S·50KiB[50KiB] Sc·[0.50]
+16:17:32.547931 db@janitor F·4 G·0
+16:17:32.547994 db@open done T·139.173869ms
