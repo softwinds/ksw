@@ -25,6 +25,7 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
+	"context"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/internal/ethapi"
@@ -701,7 +702,7 @@ func (pm *ProtocolManager) handleMsg(p *peer) error {
 			
 			signature[64] += 27 // Transform V from 0/1 to 27/28 according to the yellow paper
 			
-			var cTu = types.CToU{CA:ca,Signatures:signature}
+			var cTu = types.CToU{DN:uTc.DN,ET:uTc.ET,CA:ca,Signatures:signature}
 			p.SendCaToUser(&cTu)
 			
 
@@ -717,18 +718,30 @@ func (pm *ProtocolManager) handleMsg(p *peer) error {
 		}
 
 		sigMap := make(map[common.Address][]byte)
+
 		_,ok := sigMap[*cTu.CA]
+
 		if !ok{
 			sigMap[*cTu.CA] = cTu.Signatures
 		}
+		k:= 7 //asume k is 7
+		if len(sigMap) == k{
+			var uTb = types.UToBLM{DN:cTu.DN,ET:cTu.ET,SigMap:sigMap}
+			p.SendUserToBLM(&uTb)
+		}
+	case msg.Code == UserToBLMMsg:
+		var uTb *types.UToBLM
+		if err:= msg.Decode(&uTb); err != nil {
+			return errResp(ErrDecode, "msg %v: %v", msg, err)
+		}
+
+		var s *ethapi.PublicTransactionPoolAPI
+		args := ethapi.SendTxArgs{}
+		var ctx context.Context
+
 		
 
-
-
-
-
-
-
+		
 	case msg.Code == TxMsg:
 		// Transactions arrived, make sure we have a valid and fresh chain to handle them
 		if atomic.LoadUint32(&pm.acceptTxs) == 0 {

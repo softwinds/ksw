@@ -271,6 +271,10 @@ func (p *peer) SendCaToUser(c *types.CToU) error {
 	return p2p.Send(p.rw, CaToUserMsg, c)
 }
 
+func (p *peer) SendUserToBLM(u *types.UToBLM) error {
+	return p2p.Send(p.rw, UserToBLMMsg, u)
+}
+
 // SendBlockBodies sends a batch of block contents to the remote peer.
 func (p *peer) SendBlockBodies(bodies []*blockBody) error {
 	return p2p.Send(p.rw, BlockBodiesMsg, blockBodiesData(bodies))

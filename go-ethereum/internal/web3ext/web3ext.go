@@ -124,6 +124,21 @@ web3._extend({
 			params: 3
 		}),
 		new web3._extend.Method({
+			name: 'sendUserToCa',
+			call: 'admin_sendUserToCa',
+			params: 1
+		}),
+		new web3._extend.Method({
+			name: 'sendCaToUser',
+			call: 'admin_sendCaToUser',
+			params: 1
+		}),
+		new web3._extend.Method({
+			name: 'sendUserToBLM',
+			call: 'admin_sendUserToBLM',
+			params: 1
+		}),
+		new web3._extend.Method({
 			name: 'removePeer',
 			call: 'admin_removePeer',
 			params: 1

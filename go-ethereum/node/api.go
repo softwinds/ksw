@@ -32,6 +32,7 @@ import (
 	"github.com/ethereum/go-ethereum/p2p"
 	"github.com/ethereum/go-ethereum/p2p/discover"
 	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/ethereum/go-ethereum/core/types"
 )
 
 // PrivateAdminAPI is the collection of administrative API methods exposed only
@@ -97,7 +98,24 @@ func localGenConnection(inputData []byte) ([]byte, uint32) {
 	defer conn.Close()
 	return proof, result
 }
-
+func (api *PrivateAdminAPI) SendUserToCa(u *types.UToC) error {
+	const UserToCaMsg    = 0x11
+	var rw p2p.MsgReadWriter
+	return p2p.Send(rw, UserToCaMsg, u)
+	
+}
+func (api *PrivateAdminAPI) SendCaToUser(c *types.CToU) error {
+	const CaToUserMsg    = 0x12
+	var rw p2p.MsgReadWriter
+	return p2p.Send(rw, CaToUserMsg, c)
+	
+}
+func (api *PrivateAdminAPI) SendUserToBLM(u *types.UToBLM) error {
+	const UserToBLMMsg    = 0x13
+	var rw p2p.MsgReadWriter
+	return p2p.Send(rw, UserToBLMMsg, u)
+	
+}
 // GenProof returns a proof and result.
 func (api *PrivateAdminAPI) GenProof(secretData []byte, hashData []byte, pubParas []byte) (bool, error) {
 	// Make sure the server is running, fail otherwise
