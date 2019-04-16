@@ -25,8 +25,9 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
-	"context"
+	
 
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/internal/ethapi"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -701,9 +702,10 @@ func (pm *ProtocolManager) handleMsg(p *peer) error {
 			signature, _ := wallet.SignHashWithPassphrase(account, passwd, sig)
 			
 			signature[64] += 27 // Transform V from 0/1 to 27/28 according to the yellow paper
-			
-			var cTu = types.CToU{DN:uTc.DN,ET:uTc.ET,CA:ca,Signatures:signature}
-			p.SendCaToUser(&cTu)
+			fmt.Sprintf("CA:%s", ca)
+			fmt.Sprintf("Sign:%s", signature)
+			//var cTu = types.CToU{DN:uTc.DN,ET:uTc.ET,CA:ca,Signatures:signature}
+			//p.SendCaToUser(&cTu)
 			
 
 		}
@@ -725,7 +727,7 @@ func (pm *ProtocolManager) handleMsg(p *peer) error {
 			sigMap[*cTu.CA] = cTu.Signatures
 		}
 		k:= 7 //asume k is 7
-		if len(sigMap) == k{
+		if len(sigMap) >= k{
 			var uTb = types.UToBLM{DN:cTu.DN,ET:cTu.ET,SigMap:sigMap}
 			p.SendUserToBLM(&uTb)
 		}
@@ -734,10 +736,30 @@ func (pm *ProtocolManager) handleMsg(p *peer) error {
 		if err:= msg.Decode(&uTb); err != nil {
 			return errResp(ErrDecode, "msg %v: %v", msg, err)
 		}
+		var dn hexutil.Bytes
+		for _,d := range uTb.DN{
+			dn = append(dn,d)
+		}
+		var et hexutil.Bytes
+		for _,e := range uTb.ET{
+			et = append(et,e)
+		}
+		var cas hexutil.Bytes 
+		var sig hexutil.Bytes
+		for k,v := range uTb.SigMap{
+			for _,c := range k{
+				cas = append(cas,c)
+			}
+			for _,s := range v{
+				sig = append(sig,s)
+			}
+		}
 
-		var s *ethapi.PublicTransactionPoolAPI
-		args := ethapi.SendTxArgs{}
-		var ctx context.Context
+
+		// var s *ethapi.PublicTransactionPoolAPI
+		// args := ethapi.SendTxArgs{DN:&dn,ET:&et,CAS:&cas,Signatures:&sig,From,To,Value}
+		// var ctx context.Context
+		// s.SendBKITransaction(ctx,args)
 
 		
 
