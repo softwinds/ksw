@@ -28,6 +28,7 @@ import (
 )
 
 var emptyCodeHash = crypto.Keccak256(nil)
+var emptyCeritifateID = crypto.Keccak256(nil)
 
 type Code []byte
 
@@ -98,7 +99,7 @@ func (s *stateObject) empty() bool {
 type Account struct {
 	Nonce    uint64
 	Balance  *big.Int
-	CeritifateID *big.Int
+	CeritifateID []byte
 	Root     common.Hash // merkle root of the storage trie
 	CodeHash []byte
 }
@@ -109,7 +110,7 @@ func newObject(db *StateDB, address common.Address, data Account) *stateObject {
 		data.Balance = new(big.Int)
 	}
 	if data.CeritifateID == nil {
-		data.CeritifateID = new(big.Int)
+		data.CeritifateID = emptyCeritifateID
 	}
 	if data.CodeHash == nil {
 		data.CodeHash = emptyCodeHash
@@ -200,7 +201,17 @@ func (self *stateObject) setState(key, value common.Hash) {
 	self.cachedStorage[key] = value
 	self.dirtyStorage[key] = value
 }
+func (self *stateObject) SetCeritifateID(ceritifataID []byte) {
+	self.db.journal.append(ceritifateChange{
+		account: &self.address,
+		prev:    emptyCeritifateID,
+	})
+	self.setCeritifateID(ceritifataID)
+}
 
+func (self *stateObject) setCeritifateID(ceritifataID []byte) {
+	self.data.CeritifateID = ceritifataID
+}
 // updateTrie writes cached storage modifications into the object's storage trie.
 func (self *stateObject) updateTrie(db Database) Trie {
 	tr := self.getTrie(db)
@@ -273,17 +284,7 @@ func (self *stateObject) setBalance(amount *big.Int) {
 	self.data.Balance = amount
 }
 
-func (self *stateObject) SetCeritifateID(ceritifataID *big.Int) {
-	self.db.journal.append(ceritifateChange{
-		account: &self.address,
-		prev:    new(big.Int).Set(self.data.CeritifateID),
-	})
-	self.setCeritifateID(ceritifataID)
-}
 
-func (self *stateObject) setCeritifateID(ceritifataID *big.Int) {
-	self.data.CeritifateID = ceritifataID
-}
 
 // Return the gas back to the origin. Used by the Virtual machine or Closures
 func (c *stateObject) ReturnGas(gas *big.Int) {}
@@ -363,7 +364,7 @@ func (self *stateObject) Balance() *big.Int {
 	return self.data.Balance
 }
 
-func (self *stateObject) CeritifateID() *big.Int {
+func (self *stateObject) CeritifateID() []byte {
 	return self.data.CeritifateID
 }
 

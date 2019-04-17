@@ -504,12 +504,12 @@ func (s *PublicBlockChainAPI) GetBalance(ctx context.Context, address common.Add
 }
 
 //return the address of user's certificate
-func (s *PublicBlockChainAPI) GetCeritifateID(ctx context.Context, address common.Address, blockNr rpc.BlockNumber) (*hexutil.Big, error) {
+func (s *PublicBlockChainAPI) GetCeritifateID(ctx context.Context, address common.Address, blockNr rpc.BlockNumber) ([]byte, error) {
 	state, _, err := s.b.StateAndHeaderByNumber(ctx, blockNr)
 	if state == nil || err != nil {
 		return nil, err
 	}
-	return (*hexutil.Big)(state.GetCeritifateID(address)), state.Error()
+	return (state.GetCeritifateID(address)), state.Error()
 }
 
 // GetBlockByNumber returns the requested block. When blockNr is -1 the chain head is returned. When fullTx is true all

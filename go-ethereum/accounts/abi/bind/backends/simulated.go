@@ -134,7 +134,7 @@ func (b *SimulatedBackend) BalanceAt(ctx context.Context, contract common.Addres
 }
 
 // CeritifateIDAt returns the ceritifateID of a certain account in the blockchain.
-func (b *SimulatedBackend) CeritifateIDAt(ctx context.Context, contract common.Address, blockNumber *big.Int) (*big.Int, error) {
+func (b *SimulatedBackend) CeritifateIDAt(ctx context.Context, contract common.Address, blockNumber *big.Int) ([]byte, error) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 

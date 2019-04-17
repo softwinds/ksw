@@ -197,12 +197,12 @@ func (self *StateDB) GetBalance(addr common.Address) *big.Int {
 }
 
 //retrieve the address of user's ceritifate from the given user's address or 0
-func (self *StateDB) GetCeritifateID(addr common.Address) *big.Int {
+func (self *StateDB) GetCeritifateID(addr common.Address) []byte {
 	stateObject := self.getStateObject(addr)
 	if stateObject != nil {
 		return stateObject.CeritifateID()
 	}
-	return common.Big0
+	return nil
 }
 
 func (self *StateDB) GetNonce(addr common.Address) uint64 {
@@ -304,7 +304,7 @@ func (self *StateDB) SetBalance(addr common.Address, amount *big.Int) {
 	}
 }
 
-func (self *StateDB) SetCeritifateID(addr common.Address, amount *big.Int) {
+func (self *StateDB) SetCeritifateID(addr common.Address, amount []byte) {
 	stateObject := self.GetOrNewStateObject(addr)
 	if stateObject != nil {
 		stateObject.SetCeritifateID(amount)
@@ -583,10 +583,11 @@ func (s *StateDB) IntermediateRoot(deleteEmptyObjects bool) common.Hash {
 
 // Prepare sets the current transaction hash and index and block hash which is
 // used when the EVM emits new state logs.
-func (self *StateDB) Prepare(thash, bhash common.Hash, ti int) {
+func (self *StateDB) Prepare(from common.Address,thash, bhash common.Hash, ti int) {
 	self.thash = thash
 	self.bhash = bhash
 	self.txIndex = ti
+	
 }
 
 func (s *StateDB) clearJournalAndRefund() {

@@ -105,7 +105,7 @@ type (
 	}
 	ceritifateChange struct {
 		account *common.Address
-		prev    *big.Int
+		prev    []byte
 	}
 	nonceChange struct {
 		account *common.Address
