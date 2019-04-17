@@ -28,7 +28,7 @@ import (
 )
 
 var emptyCodeHash = crypto.Keccak256(nil)
-var emptyCeritifateID = crypto.Keccak256(nil)
+var emptyCeritifateID = common.HexToHash("ffffffffffffffffffffffffffffffff")
 
 type Code []byte
 
@@ -99,7 +99,7 @@ func (s *stateObject) empty() bool {
 type Account struct {
 	Nonce    uint64
 	Balance  *big.Int
-	CeritifateID []byte
+	CeritifateID common.Hash
 	Root     common.Hash // merkle root of the storage trie
 	CodeHash []byte
 }
@@ -109,9 +109,7 @@ func newObject(db *StateDB, address common.Address, data Account) *stateObject {
 	if data.Balance == nil {
 		data.Balance = new(big.Int)
 	}
-	if data.CeritifateID == nil {
-		data.CeritifateID = emptyCeritifateID
-	}
+	
 	if data.CodeHash == nil {
 		data.CodeHash = emptyCodeHash
 	}
@@ -201,7 +199,7 @@ func (self *stateObject) setState(key, value common.Hash) {
 	self.cachedStorage[key] = value
 	self.dirtyStorage[key] = value
 }
-func (self *stateObject) SetCeritifateID(ceritifataID []byte) {
+func (self *stateObject) SetCeritifateID(ceritifataID common.Hash) {
 	self.db.journal.append(ceritifateChange{
 		account: &self.address,
 		prev:    emptyCeritifateID,
@@ -209,7 +207,7 @@ func (self *stateObject) SetCeritifateID(ceritifataID []byte) {
 	self.setCeritifateID(ceritifataID)
 }
 
-func (self *stateObject) setCeritifateID(ceritifataID []byte) {
+func (self *stateObject) setCeritifateID(ceritifataID common.Hash) {
 	self.data.CeritifateID = ceritifataID
 }
 // updateTrie writes cached storage modifications into the object's storage trie.
@@ -364,7 +362,7 @@ func (self *stateObject) Balance() *big.Int {
 	return self.data.Balance
 }
 
-func (self *stateObject) CeritifateID() []byte {
+func (self *stateObject) CeritifateID() common.Hash {
 	return self.data.CeritifateID
 }
 

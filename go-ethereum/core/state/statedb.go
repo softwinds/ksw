@@ -42,6 +42,8 @@ var (
 
 	// emptyCode is the known hash of the empty EVM bytecode.
 	emptyCode = crypto.Keccak256Hash(nil)
+
+	
 )
 
 // StateDBs within the ethereum protocol are used to store anything
@@ -197,12 +199,12 @@ func (self *StateDB) GetBalance(addr common.Address) *big.Int {
 }
 
 //retrieve the address of user's ceritifate from the given user's address or 0
-func (self *StateDB) GetCeritifateID(addr common.Address) []byte {
+func (self *StateDB) GetCeritifateID(addr common.Address) common.Hash {
 	stateObject := self.getStateObject(addr)
 	if stateObject != nil {
 		return stateObject.CeritifateID()
 	}
-	return nil
+	return emptyCeritifateID
 }
 
 func (self *StateDB) GetNonce(addr common.Address) uint64 {
@@ -304,10 +306,10 @@ func (self *StateDB) SetBalance(addr common.Address, amount *big.Int) {
 	}
 }
 
-func (self *StateDB) SetCeritifateID(addr common.Address, amount []byte) {
+func (self *StateDB) SetCeritifateID(addr common.Address, hash common.Hash) {
 	stateObject := self.GetOrNewStateObject(addr)
 	if stateObject != nil {
-		stateObject.SetCeritifateID(amount)
+		stateObject.SetCeritifateID(hash)
 	}
 }
 
@@ -583,7 +585,7 @@ func (s *StateDB) IntermediateRoot(deleteEmptyObjects bool) common.Hash {
 
 // Prepare sets the current transaction hash and index and block hash which is
 // used when the EVM emits new state logs.
-func (self *StateDB) Prepare(from common.Address,thash, bhash common.Hash, ti int) {
+func (self *StateDB) Prepare(thash, bhash common.Hash, ti int) {
 	self.thash = thash
 	self.bhash = bhash
 	self.txIndex = ti
