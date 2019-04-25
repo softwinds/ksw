@@ -17,10 +17,10 @@ func (t txdata) MarshalJSON() ([]byte, error) {
 	type txdata struct {
 		Code         uint8           `json:"code"     gencodec:"required"` // differ txs --Agzs 09.17
 
-		DN hexutil.Bytes					`json:"dn"     gencodec:"required"`
-	    ET hexutil.Bytes					`json:"et"     gencodec:"required"`
-		CAS hexutil.Bytes       `json:"cas"     gencodec:"required"`
-		Signatures hexutil.Bytes		`json:"sig"     gencodec:"required"`
+		DN string				`json:"dn"     gencodec:"required"`
+	    ET string					`json:"et"     gencodec:"required"`
+		CAS string      `json:"cas"     gencodec:"required"`
+		Signatures string		`json:"sig"     gencodec:"required"`
 
 		AccountNonce hexutil.Uint64  `json:"nonce"    gencodec:"required"`
 		Price        *hexutil.Big    `json:"gasPrice" gencodec:"required"`
@@ -55,10 +55,10 @@ func (t txdata) MarshalJSON() ([]byte, error) {
 func (t *txdata) UnmarshalJSON(input []byte) error {
 	type txdata struct {
 		Code         uint8           `json:"code"     gencodec:"required"` // differ txs --Agzs 09.18
-		DN *hexutil.Bytes					`json:"dn"     gencodec:"required"`
-	    ET *hexutil.Bytes					`json:"et"     gencodec:"required"`
-		CAS *hexutil.Bytes     `json:"cas"     gencodec:"required"`
-		Signatures *hexutil.Bytes		`json:"sig"     gencodec:"required"`
+		DN string					`json:"dn"     gencodec:"required"`
+	    ET string					`json:"et"     gencodec:"required"`
+		CAS string     `json:"cas"     gencodec:"required"`
+		Signatures string		`json:"sig"     gencodec:"required"`
 		
 
 		AccountNonce *hexutil.Uint64 `json:"nonce"    gencodec:"required"`
@@ -100,22 +100,22 @@ func (t *txdata) UnmarshalJSON(input []byte) error {
 	}
 	t.Payload = *dec.Payload
 
-	if dec.DN == nil{
+	if len(dec.DN) == 0{
 		return errors.New("missing required field 'DN' for txdata")
 	}
-	t.DN = *dec.DN
-	if dec.ET == nil{
+	t.DN = dec.DN
+	if len(dec.ET) == 0{
 		return errors.New("missing required field 'ET' for txdata")
 	}
-	t.ET = *dec.ET
-	if dec.CAS == nil{
+	t.ET = dec.ET
+	if len(dec.CAS) == 0{
 		return errors.New("missing required field 'CAS' for txdata")
 	}
-	t.CAS = *dec.CAS
-	if dec.Signatures != nil{
+	t.CAS = dec.CAS
+	if len(dec.Signatures) == 0{
 		return errors.New("missing required field 'Signatures' for txdata")
 	}
-	t.Signatures= *dec.Signatures
+	t.Signatures= dec.Signatures
 
 
 	if dec.V == nil {

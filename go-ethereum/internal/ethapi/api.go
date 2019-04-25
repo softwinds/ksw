@@ -619,7 +619,7 @@ type CallArgs struct {
 	GasPrice hexutil.Big     `json:"gasPrice"`
 	Value    hexutil.Big     `json:"value"`
 	Data     hexutil.Bytes   `json:"data"`
-	DN hexutil.Bytes				`json:"dn"`
+	DN string				`json:"dn"`
 	ET hexutil.Bytes					`json:"et`
 	CAS hexutil.Bytes       `json:"cas"`
 	Signatures hexutil.Bytes		`json:"sig"`
@@ -872,10 +872,10 @@ func (s *PublicBlockChainAPI) rpcOutputBlock(b *types.Block, inclTx bool, fullTx
 
 // RPCTransaction represents a transaction that will serialize to the RPC representation of a transaction
 type RPCTransaction struct {
-	DN *hexutil.Bytes         `json:"dn"`
-	ET *hexutil.Bytes         `json:"et"`
-	CAS []*common.Address     `json:"cas"`
-	Signatures []*hexutil.Big `json:"sig"`
+	DN string        `json:"dn"`
+	ET string         `json:"et"`
+	CAS string    `json:"cas"`
+	Signatures string `json:"sig"`
 	
 	BlockHash        common.Hash     `json:"blockHash"`
 	BlockNumber      *hexutil.Big    `json:"blockNumber"`
@@ -909,6 +909,10 @@ func newRPCTransaction(tx *types.Transaction, blockHash common.Hash, blockNumber
 		Gas:      hexutil.Uint64(tx.Gas()),
 		GasPrice: (*hexutil.Big)(tx.GasPrice()),
 		Hash:     tx.Hash(),
+		DN:		  tx.DN(),
+		ET:		  tx.ET(),
+		CAS:		 tx.Cas(),
+		Signatures:		  tx.Signatures(),
 		Input:    hexutil.Bytes(tx.Data()),
 		Nonce:    hexutil.Uint64(tx.Nonce()),
 		Code:     tx.GetTxCodeStr(), // differ txs --Agzs 09.18
@@ -1132,10 +1136,10 @@ func (s *PublicTransactionPoolAPI) sign(addr common.Address, tx *types.Transacti
 // SendTxArgs represents the arguments to sumbit a new transaction into the transaction pool.
 type SendTxArgs struct {
 
-	DN *hexutil.Bytes         `json:"dn"`
-	ET *hexutil.Bytes         `json:"et"`
-	CAS *hexutil.Bytes     `json:"cas"`
-	Signatures *hexutil.Bytes `json:"sig"`
+	DN string         `json:"dn"`
+	ET string         `json:"et"`
+	CAS string     `json:"cas"`
+	Signatures string  `json:"sig"`
 
 	From     common.Address  `json:"from"`
 	To       *common.Address `json:"to"`
@@ -1192,12 +1196,12 @@ func (args *SendTxArgs) setDefaults(ctx context.Context, b Backend) error {
 
 func (args *SendTxArgs) toTransaction() *types.Transaction {
 	var input []byte
-	var dn []byte
+	var dn string
 	var et []byte
 	var cas []byte
 	var sig []byte
-	if args.DN != nil {
-		dn = *args.DN
+	if len(args.DN) != 0{
+		dn = args.DN
 	}
 	if args.ET != nil {
 		et = *args.ET
@@ -1303,6 +1307,7 @@ func (s *PublicTransactionPoolAPI) SendBKITransaction(ctx context.Context, args 
 	// Assemble the transaction and sign with the wallet
 	tx := args.toTransaction()
 	tx.SetTxCode(types.BKITx)
+	
 
 	var chainID *big.Int
 	if config := s.b.ChainConfig(); config.IsEIP155(s.b.CurrentBlock().Number()) {

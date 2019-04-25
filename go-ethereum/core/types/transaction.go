@@ -57,10 +57,10 @@ type Transaction struct {
 
 type txdata struct {
 	//
-	DN []byte					`json:"dn"     gencodec:"required"`
-	ET []byte					`json:"et"     gencodec:"required"`
-	CAS []byte       `json:"cas"     gencodec:"required"`
-	Signatures []byte		`json:"sig"     gencodec:"required"`
+	DN string					`json:"dn"     gencodec:"required"`
+	ET string					`json:"et"     gencodec:"required"`
+	CAS string     `json:"cas"     gencodec:"required"`
+	Signatures string		`json:"sig"     gencodec:"required"`
 
 	Code         uint8           `json:"code"     gencodec:"required"` // differ txs --Agzs 09.17
 	AccountNonce uint64          `json:"nonce"    gencodec:"required"`
@@ -80,10 +80,10 @@ type txdata struct {
 }
 
 type txdataMarshaling struct {
-	DN hexutil.Bytes
-	ET hexutil.Bytes
-	CAS hexutil.Bytes
-	Signatures hexutil.Bytes
+	DN string
+	ET string
+	CAS string
+	Signatures string
 
 	Code         uint8 // differ txs --Agzs 09.18
 	AccountNonce hexutil.Uint64
@@ -96,29 +96,29 @@ type txdataMarshaling struct {
 	S            *hexutil.Big
 }
 
-func NewTransaction(nonce uint64, to common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte,dn []byte,et []byte,cas []byte,sig []byte) *Transaction {
+func NewTransaction(nonce uint64, to common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte,dn string,et string,cas string,sig string) *Transaction {
 	return newTransaction(nonce, &to, amount, gasLimit, gasPrice, data,dn ,et ,cas ,sig)
 }
 
-func NewContractCreation(nonce uint64, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte,dn []byte,et []byte,cas []byte,sig []byte) *Transaction {
+func NewContractCreation(nonce uint64, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte,dn string,et string,cas string,sig string) *Transaction {
 	return newTransaction(nonce, nil, amount, gasLimit, gasPrice, data,dn ,et ,cas ,sig)
 }
 
-func newTransaction(nonce uint64, to *common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte,dn []byte,et []byte,cas []byte,sig []byte) *Transaction {
+func newTransaction(nonce uint64, to *common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte,dn string,et string,cas string,sig string) *Transaction {
 	if len(data) > 0 {
 		data = common.CopyBytes(data)
 	}
 	if len(dn) > 0 {
-		dn = common.CopyBytes(dn)
+		dn = dn
 	}
 	if len(et) > 0 {
-		et = common.CopyBytes(et)
+		et = et
 	}
 	if len(cas) > 0 {
-		cas = common.CopyBytes(cas)
+		cas = cas
 	}
 	if len(sig) > 0 {
-		sig = common.CopyBytes(sig)
+		sig = sig
 	}
 	d := txdata{
 		DN:			  dn,
@@ -209,10 +209,10 @@ func (tx *Transaction) UnmarshalJSON(input []byte) error {
 	return nil
 }
 
-func (tx *Transaction) DN() []byte        { return common.CopyBytes(tx.data.DN) }
-func (tx *Transaction) ET() []byte        { return common.CopyBytes(tx.data.ET) }
-func (tx *Transaction) Cas() []byte		{return common.CopyBytes(tx.data.CAS)}
-func (tx *Transaction) Signatures() []byte 		{return common.CopyBytes(tx.data.Signatures)}
+func (tx *Transaction) DN() string        { return tx.data.DN }
+func (tx *Transaction) ET() string       { return tx.data.ET }
+func (tx *Transaction) Cas() string		{return tx.data.CAS}
+func (tx *Transaction) Signatures() string		{return tx.data.Signatures}
 func (tx *Transaction) Code() uint8        { return tx.data.Code }
 func (tx *Transaction) Data() []byte       { return common.CopyBytes(tx.data.Payload) }
 func (tx *Transaction) Gas() uint64        { return tx.data.GasLimit }
@@ -225,7 +225,18 @@ func (tx *Transaction) CheckNonce() bool   { return true }
 func (tx *Transaction) SetTxCode(code uint8) {
 	tx.data.Code = code
 }
-
+func (tx *Transaction) SetDN(dn string) {
+	tx.data.DN = dn
+}
+func (tx *Transaction) SetET(et string) {
+	tx.data.ET = et
+}
+func (tx *Transaction) SetCAS(cas string) {
+	tx.data.CAS = cas
+}
+func (tx *Transaction) SetSIG(sig string) {
+	tx.data.Signatures = sig
+}
 // GetTxCode returns the transactoion's type code. --Agzs 09.18
 func (tx *Transaction) GetTxCodeStr() string {
 	if tx.Code() == PublicTx {
@@ -449,10 +460,10 @@ type Message struct {
 	to         *common.Address
 	from       common.Address
 	code       uint8
-	DN 		   []byte
-	ET 		   []byte
-	CAS			[]byte
-	Signatures  []byte
+	DN 		   string
+	ET 		   string
+	CAS			string
+	Signatures  string
 
 
 
@@ -464,7 +475,7 @@ type Message struct {
 	checkNonce bool
 }
 
-func NewMessage(from common.Address, to *common.Address, code uint8, nonce uint64, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte, checkNonce bool,dn []byte,et []byte,cas []byte,sig []byte) Message {
+func NewMessage(from common.Address, to *common.Address, code uint8, nonce uint64, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte, checkNonce bool,dn string,et string,cas string,sig string) Message {
 	return Message{
 		from:       from,
 		to:         to,
@@ -491,11 +502,11 @@ func (m Message) Nonce() uint64        { return m.nonce }
 func (m Message) Data() []byte         { return m.data }
 func (m Message) CheckNonce() bool     { return m.checkNonce }
 func (m Message) Code() uint8          { return m.code }
-func (m Message) Dn() []byte          { return m.DN }
-func (m Message) Et() []byte          { return m.ET }
-func (m Message) Cas() []byte{
+func (m Message) Dn() string       { return m.DN }
+func (m Message) Et() string       { return m.ET }
+func (m Message) Cas() string{
 	return m.CAS
 }
-func (m Message) Sign() []byte{
+func (m Message) Sign() string{
 	return m.Signatures
 }  
