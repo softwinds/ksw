@@ -337,6 +337,8 @@ func (s *PrivateAccountAPI) LockAccount(addr common.Address) bool {
 	return fetchKeystore(s.am).Lock(addr) == nil
 }
 
+
+
 // signTransactions sets defaults and signs the given transaction
 // NOTE: the caller needs to ensure that the nonceLock is held, if applicable,
 // and release it after the transaction has been submitted to the tx pool
@@ -504,7 +506,7 @@ func (s *PublicBlockChainAPI) GetBalance(ctx context.Context, address common.Add
 }
 
 //return the address of user's certificate
-func (s *PublicBlockChainAPI) GetCeritifateID(ctx context.Context, address common.Address, blockNr rpc.BlockNumber) (common.Hash, error) {
+func (s *PublicBlockChainAPI) GetCeritificateID(ctx context.Context, address common.Address, blockNr rpc.BlockNumber) (common.Hash, error) {
 	state, _, err := s.b.StateAndHeaderByNumber(ctx, blockNr)
 	if state == nil || err != nil {
 		return common.Hash{}, err
@@ -619,10 +621,10 @@ type CallArgs struct {
 	GasPrice hexutil.Big     `json:"gasPrice"`
 	Value    hexutil.Big     `json:"value"`
 	Data     hexutil.Bytes   `json:"data"`
-	DN string				`json:"dn"`
-	ET hexutil.Bytes					`json:"et`
-	CAS hexutil.Bytes       `json:"cas"`
-	Signatures hexutil.Bytes		`json:"sig"`
+	DN string				 `json:"dn"`
+	ET string				 `json:"et"`
+	CAS string               `json:"cas"`
+	Signatures string		 `json:"sig"`
 }
 
 func (s *PublicBlockChainAPI) doCall(ctx context.Context, args CallArgs, blockNr rpc.BlockNumber, vmCfg vm.Config, timeout time.Duration) ([]byte, uint64, bool, error) {
@@ -1197,20 +1199,20 @@ func (args *SendTxArgs) setDefaults(ctx context.Context, b Backend) error {
 func (args *SendTxArgs) toTransaction() *types.Transaction {
 	var input []byte
 	var dn string
-	var et []byte
-	var cas []byte
-	var sig []byte
+	var et string
+	var cas string
+	var sig string
 	if len(args.DN) != 0{
 		dn = args.DN
 	}
-	if args.ET != nil {
-		et = *args.ET
+	if len(args.ET) != 0 {
+		et = args.ET
 	}
-	if args.CAS != nil {
-		cas = *args.CAS
+	if len(args.CAS) != 0 {
+		cas = args.CAS
 	}
-	if args.Signatures != nil {
-		sig = *args.Signatures
+	if len(args.Signatures) != 0 {
+		sig = args.Signatures
 	}
 	if args.Data != nil {
 		input = *args.Data
@@ -1279,7 +1281,90 @@ func (s *PublicTransactionPoolAPI) SendPublicTransaction(ctx context.Context, ar
 	return submitTransaction(ctx, s.b, signed)
 }
 
-//================= zero-knowledge transactions ============================== --Agzs 09.17
+
+/*
+sdfa
+*/
+func (s *PublicTransactionPoolAPI) SendUserMsgToCa(Dn string, Et string, ca common.Address) (hexutil.Bytes, error) {
+
+	// Look up the wallet containing the requested signer
+	account := accounts.Account{Address: ca}
+
+	wallet, err := s.b.AccountManager().Find(account)
+
+	if err != nil {
+		return nil,err
+	}		
+	str := Dn + Et
+	data := []byte(str)
+	
+
+	signature, err := wallet.SignHashWithPassphrase(account, "", signHash(data))
+	if err != nil {
+		return nil,err
+	}
+	signature[64] += 27 // Transform V from 0/1 to 27/28 according to the yellow paper
+	
+	return signature,err
+}
+
+func (s *PublicTransactionPoolAPI) sendUserMsgToCa(Dn string, Et string, ca common.Address) (hexutil.Bytes, error) {
+
+	// Look up the wallet containing the requested signer
+	account := accounts.Account{Address: ca}
+
+	wallet, err := s.b.AccountManager().Find(account)
+
+	if err != nil {
+		return nil,err
+	}		
+	str := Dn + Et
+	data := []byte(str)
+	
+
+	signature, err := wallet.SignHashWithPassphrase(account, "", signHash(data))
+	if err != nil {
+		return nil,err
+	}
+	signature[64] += 27 // Transform V from 0/1 to 27/28 according to the yellow paper
+	
+	return signature,err
+}
+
+func (s *PublicTransactionPoolAPI) RequestCertificate(Dn string, Et string, cas string) string{
+
+	
+	sigs := ""
+	for _,ca := range(strings.Split(cas,",")){
+		address := []byte(ca)
+		sig,_ := s.sendUserMsgToCa(Dn,Et,common.BytesToAddress(address))
+		sigs = sigs +" "+sig.String()
+	}
+	return sigs
+}
+
+func (s *PublicTransactionPoolAPI) ChangeCeritificate(Dn string, Et string, ca common.Address) (hexutil.Bytes, error) {
+
+	// Look up the wallet containing the requested signer
+	account := accounts.Account{Address: ca}
+
+	wallet, err := s.b.AccountManager().Find(account)
+
+	if err != nil {
+		return nil,err
+	}		
+	str := Dn + Et
+	data := []byte(str)
+	
+
+	signature, err := wallet.SignHashWithPassphrase(account, "", signHash(data))
+	if err != nil {
+		return nil,err
+	}
+	signature[64] += 27 // Transform V from 0/1 to 27/28 according to the yellow paper
+	
+	return signature,err
+}
 
 // SendBKITransaction creates a mint transaction for the given argument, sign it and submit it to the
 // transaction pool.

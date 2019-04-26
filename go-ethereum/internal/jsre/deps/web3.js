@@ -5275,9 +5275,9 @@ var methods = function () {
         outputFormatter: formatters.outputBigNumberFormatter
     });
 
-    var getCeritifateID = new Method({
-        name: 'getCeritifateID',
-        call: 'eth_getCeritifateID',
+    var getCeritificateID = new Method({
+        name: 'getCeritificateID',
+        call: 'eth_getCeritificateID',
         params: 2,
         inputFormatter: [formatters.inputAddressFormatter, formatters.inputDefaultBlockNumberFormatter],
         outputFormatter: utils.toHex
@@ -5380,12 +5380,36 @@ var methods = function () {
      * UpdateTransaction: A updates his own zero-knowledge balance;
      * RedeemTransaction: B redeems t zero-knowledge coin and updates his own zero-knowledge balance;
      */
+    var sendUserMsgToCa = new Method({
+        name: 'sendUserMsgToCa',
+        call: 'eth_sendUserMsgToCa',
+        params: 3,
+        inputFormatter: [formatters.formatInputString,formatters.formatInputString,formatters.inputAddressFormatter]
+    });
+
+    var requestCertificate = new Method({
+        name: 'requestCertificate',
+        call: 'eth_requestCertificate',
+        params: 3,
+        inputFormatter: [formatters.formatInputString,formatters.formatInputString,formatters.formatInputString]
+    });
+
+    var changeCeritificate = new Method({
+        name: 'changeCeritificate',
+        call: 'eth_changeCeritificate',
+        params: 3,
+        inputFormatter: [formatters.formatInputString,formatters.formatInputString,formatters.inputAddressFormatter]
+    });
+
     var sendBKITransaction = new Method({
         name: 'sendBKITransaction',
         call: 'eth_sendBKITransaction',
         params: 1,
         inputFormatter: [formatters.inputTransactionFormatter]
     });
+
+    
+    
 
 
     var sendPublicTransaction = new Method({
@@ -5456,7 +5480,7 @@ var methods = function () {
 
     return [
         getBalance,
-        getCeritifateID,
+        getCeritificateID,
         getStorageAt,
         getCode,
         getBlock,
@@ -5472,6 +5496,9 @@ var methods = function () {
         estimateGas,
         sendRawTransaction,
         signTransaction,
+        sendUserMsgToCa,
+        requestCertificate,
+        changeCeritificate,
         sendBKITransaction,
         sendPublicTransaction,
         sign,
