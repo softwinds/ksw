@@ -1,15 +1,14 @@
 package types
 
-import "github.com/ethereum/go-ethereum/common"
 
 type UToC struct {
-	DN       []byte         `json:"dn"        gencodec:"required"`
-	ET       []byte         `json:"et"        gencodec:"required"`
-	CAS      []*common.Address	`json:"cas"        gencodec:"required"`
+	DN       string         `json:"dn"        gencodec:"required"`
+	ET       string         `json:"et"        gencodec:"required"`
+	CAS      string	        `json:"cas"        gencodec:"required"`
 }
 
-func (u *UToC) Dn() []byte            { return common.CopyBytes(u.DN) }
-func (u *UToC) Et() []byte            { return common.CopyBytes(u.ET) }
-
+func (u *UToC) Dn() string            { return u.DN }
+func (u *UToC) Et() string            { return u.ET }
+func (u *UToC) Cas() string            { return u.CAS }
 
 

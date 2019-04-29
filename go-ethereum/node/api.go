@@ -33,6 +33,7 @@ import (
 	"github.com/ethereum/go-ethereum/p2p/discover"
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/ethereum/go-ethereum/core/types"
+	
 )
 
 // PrivateAdminAPI is the collection of administrative API methods exposed only
@@ -98,9 +99,10 @@ func localGenConnection(inputData []byte) ([]byte, uint32) {
 	defer conn.Close()
 	return proof, result
 }
-func (api *PrivateAdminAPI) SendUserToCa(u *types.UToC) error {
+func (api *PrivateAdminAPI) SendUserToCa(u types.UToC) error {
+	
 	const UserToCaMsg    = 0x11
-	var rw p2p.MsgReadWriter
+	var rw p2p.MsgWriter
 	return p2p.Send(rw, UserToCaMsg, u)
 	
 }

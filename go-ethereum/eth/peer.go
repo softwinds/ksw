@@ -263,15 +263,16 @@ func (p *peer) SendBlockHeaders(headers []*types.Header) error {
 	return p2p.Send(p.rw, BlockHeadersMsg, headers)
 }
 
-func (p *peer) SendUserToCa(u *types.UToC) error {
+
+func (p *peer) SendUserToCa(u types.UToC) error {
 	return p2p.Send(p.rw, UserToCaMsg, u)
 }
 
-func (p *peer) SendCaToUser(c *types.CToU) error {
+func (p *peer) SendCaToUser(c types.CToU) error {
 	return p2p.Send(p.rw, CaToUserMsg, c)
 }
 
-func (p *peer) SendUserToBLM(u *types.UToBLM) error {
+func (p *peer) SendUserToBLM(u types.UToBLM) error {
 	return p2p.Send(p.rw, UserToBLMMsg, u)
 }
 

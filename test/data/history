@@ -50,3 +50,26 @@ eth.getCeritifateID(eth.accounts[0])
 txpool.status
 miner.stop()
 miner.start()
+txpool.status
+eth.accounts
+miner.setEtherbase(eth.accounts[0])
+miner.stop
+miner.stop()
+miner.start()
+miner.setEtherbase(eth.accounts[1])
+miner.start()
+miner.stop()
+miner.start()
+miner.stop()
+miner.start()
+txpool.status
+eth.getCeritifateID(eth.accounts[0])
+eth.getTransaction("0x273be67e340e53187a1c68cb8c6a206b3e319753ba2b52d44a8a49e2d05c3f10")
+admin.sendUserToCa({"XX","123","0xda7acecce58367bfbf4380f6b0ec7144a6cf2d0a,0xcdc2a78a169e82ff22721d1c3f01960a809cd797"})
+eth.accounts
+eth.requestCertificate("baidu.com","2015-2019","0x94678b45acd4ba0a41b318c71dce1eba204f0e32,0xda7acecce58367bfbf4380f6b0ec7144a6cf2d0a")
+eth.sendUserMsgToCa("1","2","0xda7acecce58367bfbf4380f6b0ec7144a6cf2d0a")
+eth.requestCertificate("baidu.com","2015-2019","0x94678b45acd4ba0a41b318c71dce1eba204f0e32,0xda7acecce58367bfbf4380f6b0ec7144a6cf2d0a")
+eth.sendUserMsgToCa("1","2","0xda7acecce58367bfbf4380f6b0ec7144a6cf2d0a")
+eth.requestCertificate("baidu.com","2015-2019","0x94678b45acd4ba0a41b318c71dce1eba204f0e32,0xda7acecce58367bfbf4380f6b0ec7144a6cf2d0a")
+eth.verifyCeritificate("baidu.com","2015-2019","0x94678b45acd4ba0a41b318c71dce1eba204f0e32 --> 0xe796019302aff5825244af9d2a34151a466ae38779eeb3762ebb172d9d38d47838e282480a689d47c09ddfff67c7dca925e7deb7a208b669ce60843866b8a33e1c;        0xda7acecce58367bfbf4380f6b0ec7144a6cf2d0a --> 0xb840bd4462a4d207a55f32c24261152404ef011ea177cb81c9ad21d2bfad7a705f6ef99900a295ea8011500bdd95cc4105c70326d2662d17708735acbb9f49731b;        ")

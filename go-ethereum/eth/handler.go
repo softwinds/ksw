@@ -25,12 +25,11 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
+	"strings"
 	
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/internal/ethapi"
-	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/accounts"
 	"github.com/ethereum/go-ethereum/consensus"
 	"github.com/ethereum/go-ethereum/consensus/misc"
@@ -45,6 +44,7 @@ import (
 	"github.com/ethereum/go-ethereum/p2p/discover"
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/ethereum/go-ethereum/internal/ethapi"
 )
 
 const (
@@ -670,45 +670,37 @@ func (pm *ProtocolManager) handleMsg(p *peer) error {
 
 	case msg.Code == UserToCaMsg:
 
-		var uTc *types.UToC
+		var uTc types.UToC
 
 		if err := msg.Decode(&uTc); err != nil {
 			return errResp(ErrDecode, "msg %v: %v", msg, err)
 		}
-		
-		var b ethapi.Backend
+		var b ethapi.Backend 
+		sigs := ""
+		for _,ca := range(strings.Split(uTc.CAS,",")){
+			address := []byte(ca)
+			// Look up the wallet containing the requested signer
+			account := accounts.Account{Address: common.BytesToAddress(address)}
 
-		var data []byte
-		for _,bt := range uTc.DN {
-			data = append(data,bt)
-		}
-		for _,bt := range uTc.ET {
-			data = append(data,bt)
-		}
+			wallet, err := b.AccountManager().Find(account)
 
-		passwd := ""
-
-		
-
-		for _,ca := range uTc.CAS{
-			account := accounts.Account{Address: *ca}
-
-			wallet, _ := b.AccountManager().Find(account)
+			if err != nil {
+				return errResp(ErrDecode, "msg %v: %v", msg, err)
+			}		
+			str := uTc.DN+uTc.ET
+			data := []byte(str)
 			
-
-			msg := fmt.Sprintf("\x19Ethereum Signed Message:\n%d%s", len(data), data)
-			sig := crypto.Keccak256([]byte(msg))
-
-			signature, _ := wallet.SignHashWithPassphrase(account, passwd, sig)
-			
+			signature, err := wallet.SignHashWithPassphrase(account, "", data)
+			if err != nil {
+				return errResp(ErrDecode, "msg %v: %v", msg, err)
+			}
 			signature[64] += 27 // Transform V from 0/1 to 27/28 according to the yellow paper
-			fmt.Sprintf("CA:%s", ca)
-			fmt.Sprintf("Sign:%s", signature)
-			//var cTu = types.CToU{DN:uTc.DN,ET:uTc.ET,CA:ca,Signatures:signature}
-			//p.SendCaToUser(&cTu)
 			
-
+			sigs = sigs +" "+string(signature[:])
 		}
+		return errResp(ErrDecode, "msg %v:", sigs)
+
+		
 
 		
 

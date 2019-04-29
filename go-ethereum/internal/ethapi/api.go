@@ -1336,35 +1336,57 @@ func (s *PublicTransactionPoolAPI) RequestCertificate(Dn string, Et string, cas 
 	
 	sigs := ""
 	for _,ca := range(strings.Split(cas,",")){
-		address := []byte(ca)
-		sig,_ := s.sendUserMsgToCa(Dn,Et,common.BytesToAddress(address))
-		sigs = sigs +" "+sig.String()
+		account := common.HexToAddress(ca)		
+		sig,_ := s.sendUserMsgToCa(Dn,Et,account)
+		sigs = sigs +ca+" --> "+sig.String() +";"
 	}
 	return sigs
 }
 
-func (s *PublicTransactionPoolAPI) ChangeCeritificate(Dn string, Et string, ca common.Address) (hexutil.Bytes, error) {
+func (s *PublicTransactionPoolAPI) ChangeCeritificate(Dn string, Et string, cas string) string {
 
-	// Look up the wallet containing the requested signer
-	account := accounts.Account{Address: ca}
-
-	wallet, err := s.b.AccountManager().Find(account)
-
-	if err != nil {
-		return nil,err
-	}		
-	str := Dn + Et
-	data := []byte(str)
-	
-
-	signature, err := wallet.SignHashWithPassphrase(account, "", signHash(data))
-	if err != nil {
-		return nil,err
+	sigs := ""
+	for _,ca := range(strings.Split(cas,",")){
+		account := common.HexToAddress(ca)
+		sig,_ := s.sendUserMsgToCa(Dn,Et,account)
+		sigs = sigs +ca+" --> "+sig.String() +";"
 	}
-	signature[64] += 27 // Transform V from 0/1 to 27/28 according to the yellow paper
-	
-	return signature,err
+	return sigs
 }
+
+func (s *PublicTransactionPoolAPI) CancelCeritificate(Dn string, Et string, cas string) string {
+
+	sigs := ""
+	for _,ca := range(strings.Split(cas,",")){
+		account := common.HexToAddress(ca)
+		sig,_ := s.sendUserMsgToCa(Dn,Et,account)
+		sigs = sigs +ca+" --> "+sig.String() +";"
+	}
+	return sigs
+}
+
+func (s *PublicTransactionPoolAPI) VerifyCeritificate(Dn string, Et string, CaAndSig string) bool {
+
+	result := true
+	for _,ca := range(strings.Split(CaAndSig,";")){
+		if len(ca) != 0{
+			cAs := strings.Split(ca," --> ")
+		if result {
+			account := common.HexToAddress(cAs[0])
+			sig,_ := s.sendUserMsgToCa(Dn,Et,account)
+			if strings.EqualFold(sig.String(),cAs[1]){
+				result = true
+			}else{
+				result = false
+				break
+			}
+		}
+		}
+		
+	}
+	return result
+}
+
 
 // SendBKITransaction creates a mint transaction for the given argument, sign it and submit it to the
 // transaction pool.

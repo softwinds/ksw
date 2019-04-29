@@ -5398,7 +5398,21 @@ var methods = function () {
         name: 'changeCeritificate',
         call: 'eth_changeCeritificate',
         params: 3,
-        inputFormatter: [formatters.formatInputString,formatters.formatInputString,formatters.inputAddressFormatter]
+        inputFormatter: [formatters.formatInputString,formatters.formatInputString,formatters.formatInputString]
+    });
+
+    var cancelCeritificate = new Method({
+        name: 'cancelCeritificate',
+        call: 'eth_cancelCeritificate',
+        params: 3,
+        inputFormatter: [formatters.formatInputString,formatters.formatInputString,formatters.formatInputString]
+    });
+
+    var verifyCeritificate = new Method({
+        name: 'verifyCeritificate',
+        call: 'eth_verifyCeritificate',
+        params: 3,
+        inputFormatter: [formatters.formatInputString,formatters.formatInputString,formatters.formatInputString]
     });
 
     var sendBKITransaction = new Method({
@@ -5407,9 +5421,6 @@ var methods = function () {
         params: 1,
         inputFormatter: [formatters.inputTransactionFormatter]
     });
-
-    
-    
 
 
     var sendPublicTransaction = new Method({
@@ -5499,6 +5510,8 @@ var methods = function () {
         sendUserMsgToCa,
         requestCertificate,
         changeCeritificate,
+        cancelCeritificate,
+        verifyCeritificate,
         sendBKITransaction,
         sendPublicTransaction,
         sign,
