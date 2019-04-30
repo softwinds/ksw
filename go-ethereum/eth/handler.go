@@ -721,7 +721,7 @@ func (pm *ProtocolManager) handleMsg(p *peer) error {
 		k:= 7 //asume k is 7
 		if len(sigMap) >= k{
 			var uTb = types.UToBLM{DN:cTu.DN,ET:cTu.ET,SigMap:sigMap}
-			p.SendUserToBLM(&uTb)
+			p.SendUserToBLM(uTb)
 		}
 	case msg.Code == UserToBLMMsg:
 		var uTb *types.UToBLM

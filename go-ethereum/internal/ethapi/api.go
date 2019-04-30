@@ -1333,55 +1333,67 @@ func (s *PublicTransactionPoolAPI) sendUserMsgToCa(Dn string, Et string, ca comm
 
 func (s *PublicTransactionPoolAPI) RequestCertificate(Dn string, Et string, cas string) string{
 
-	
+	c := ""
 	sigs := ""
 	for _,ca := range(strings.Split(cas,",")){
 		account := common.HexToAddress(ca)		
 		sig,_ := s.sendUserMsgToCa(Dn,Et,account)
-		sigs = sigs +ca+" --> "+sig.String() +";"
+		c = c+ca+";"
+		sigs = sigs+sig.String() +";"
 	}
-	return sigs
+	c = c[0:len(c)-1]
+	sigs = sigs[0:len(sigs)-1]
+	return c + " --> " +sigs
 }
 
 func (s *PublicTransactionPoolAPI) ChangeCeritificate(Dn string, Et string, cas string) string {
 
+	c := ""
 	sigs := ""
 	for _,ca := range(strings.Split(cas,",")){
-		account := common.HexToAddress(ca)
+		account := common.HexToAddress(ca)		
 		sig,_ := s.sendUserMsgToCa(Dn,Et,account)
-		sigs = sigs +ca+" --> "+sig.String() +";"
+		c = c+ca+";"
+		sigs = sigs+sig.String() +";"
 	}
-	return sigs
+	c = c[0:len(c)-1]
+	sigs = sigs[0:len(sigs)-1]
+	return c + " --> " +sigs
 }
 
 func (s *PublicTransactionPoolAPI) CancelCeritificate(Dn string, Et string, cas string) string {
 
+	c := ""
 	sigs := ""
 	for _,ca := range(strings.Split(cas,",")){
-		account := common.HexToAddress(ca)
+		account := common.HexToAddress(ca)		
 		sig,_ := s.sendUserMsgToCa(Dn,Et,account)
-		sigs = sigs +ca+" --> "+sig.String() +";"
+		c = c+ca+";"
+		sigs = sigs+sig.String() +";"
 	}
-	return sigs
+	c = c[0:len(c)-1]
+	sigs = sigs[0:len(sigs)-1]
+	return c + " --> " +sigs
 }
 
 func (s *PublicTransactionPoolAPI) VerifyCeritificate(Dn string, Et string, CaAndSig string) bool {
 
 	result := true
-	for _,ca := range(strings.Split(CaAndSig,";")){
-		if len(ca) != 0{
-			cAs := strings.Split(ca," --> ")
+	cAs := strings.Split(CaAndSig," --> ")
+	c := strings.Split(cAs[0],";")
+	sigs := strings.Split(cAs[1],";")
+	for i,ca := range(c){
 		if result {
-			account := common.HexToAddress(cAs[0])
+			account := common.HexToAddress(ca)
 			sig,_ := s.sendUserMsgToCa(Dn,Et,account)
-			if strings.EqualFold(sig.String(),cAs[1]){
+			if strings.EqualFold(sig.String(),sigs[i]){
 				result = true
 			}else{
 				result = false
 				break
 			}
 		}
-		}
+		
 		
 	}
 	return result
