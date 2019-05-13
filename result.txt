@@ -1,0 +1,297 @@
+sdu@ksw:~/go/src/github.com/ethereum/bki$ geth --datadir ./data --networkid 55661 --port 2000 console
+INFO [05-13|10:23:40.200] Maximum peer count                       ETH=25 LES=0 total=25
+INFO [05-13|10:23:40.201] Starting peer-to-peer node               instance=Geth/v1.8.13-unstable/linux-amd64/go1.10
+INFO [05-13|10:23:40.201] Allocated cache and file handles         database=/home/sdu/go/src/github.com/ethereum/bki/data/geth/chaindata cache=768 handles=512
+INFO [05-13|10:23:40.326] Initialised chain configuration          config="{ChainID: 35870 Homestead: 1 DAO: <nil> DAOSupport: false EIP150: 2 EIP155: 3 EIP158: 3 Byzantium: 4 Constantinople: 5 Engine: clique}"
+INFO [05-13|10:23:40.326] Initialising Ethereum protocol           versions="[63 62]" network=55661
+INFO [05-13|10:23:40.327] Loaded most recent local header          number=4 hash=6b1c7e…890e86 td=6
+INFO [05-13|10:23:40.327] Loaded most recent local full block      number=4 hash=6b1c7e…890e86 td=6
+INFO [05-13|10:23:40.327] Loaded most recent local fast block      number=4 hash=6b1c7e…890e86 td=6
+INFO [05-13|10:23:40.330] Loaded local transaction journal         transactions=4 dropped=4
+INFO [05-13|10:23:40.330] Regenerated local transaction journal    transactions=0 accounts=0
+WARN [05-13|10:23:40.330] Blockchain not empty, fast sync disabled 
+INFO [05-13|10:23:40.334] Starting P2P networking 
+INFO [05-13|10:23:42.599] UDP listener up                          self=enode://0a355dba91a1e95a5f2de8925b442a2d257d337d5c81cf76b251d4d3790be694df6fe8c61045f1da1f6f80bf34ee167d443036c1fccbe12867acb55d5e940148@[::]:2000
+INFO [05-13|10:23:42.600] RLPx listener up                         self=enode://0a355dba91a1e95a5f2de8925b442a2d257d337d5c81cf76b251d4d3790be694df6fe8c61045f1da1f6f80bf34ee167d443036c1fccbe12867acb55d5e940148@[::]:2000
+INFO [05-13|10:23:42.601] IPC endpoint opened                      url=/home/sdu/go/src/github.com/ethereum/bki/data/geth.ipc
+Welcome to the Geth JavaScript console!
+
+instance: Geth/v1.8.13-unstable/linux-amd64/go1.10
+INFO [05-13|10:23:42.649] Etherbase automatically configured       address=0xD4926D12B5a4A9C33411709242330914C8B0fAec
+coinbase: 0xd4926d12b5a4a9c33411709242330914c8b0faec
+at block: 4 (Tue, 30 Apr 2019 15:36:20 CST)
+ datadir: /home/sdu/go/src/github.com/ethereum/bki/data
+ modules: admin:1.0 clique:1.0 debug:1.0 eth:1.0 miner:1.0 net:1.0 personal:1.0 rpc:1.0 txpool:1.0 web3:1.0
+
+> eth.accounts
+["0xd4926d12b5a4a9c33411709242330914c8b0faec", "0x19fc3c11237b89fd1162220303a685f197ae26f4", "0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71", "0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4", "0xf907670cc24db89f9ce2e30b63c40928e1bb50c6", "0xa044eb3a54fbb4e1d1f078fefa7a3638d83d5f0d"]
+> personal.unlockAccount(eth.accounts[0])
+Unlock account 0xd4926d12b5a4a9c33411709242330914c8b0faec
+Passphrase: 
+true
+> eth.requestCertificate("www.bki.com","2020/05/20","0x19fc3c11237b89fd1162220303a685f197ae26f4,0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71,0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4")
+"0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4 --> 0xb22332bc49d3fccb860d5b359263fdb42a7e9894513a5812ac0290c77fa5bc4c0af3d54e141948f5dff6eaa0abb33d84b758ad5a0a2c7a4166856346b000f5a11c;0xaf5fd5148d7b79fad940feaefa6acf0e0500fc6de7cc1aebe8eef969c68c2d43336150b5753c87da3553ef813d6bf914ab35649b512c5350540f013238f8e0f91c;0x99a02651f38e2e075a01792ffaf59865374b7def5d9b2477e9586ec5aec33f1d00688d609ca76ff98b382321620f27e45a6b769f1316a6b67de4b909847cab4f1b"
+> eth.verifyCeritificate("www.bki.com","2020/05/20","0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4 --> 0xb22332bc49d3fccb860d5b359263fdb42a7e9894513a5812ac0290c77fa5bc4c0af3d54e141948f5dff6eaa0abb33d84b758ad5a0a2c7a4166856346b000f5a11c;0xaf5fd5148d7b79fad940feaefa6acf0e0500fc6de7cc1aebe8eef969c68c2d43336150b5753c87da3553ef813d6bf914ab35649b512c5350540f013238f8e0f91c;0x99a02651f38e2e075a01792ffaf59865374b7def5d9b2477e9586ec5aec33f1d00688d609ca76ff98b382321620f27e45a6b769f1316a6b67de4b909847cab4f1b")
+true
+> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toWei(0.05,"ether"),dn:"www.bki.com",et:"2020/05/20",cas:"0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4",sig:"0xb22332bc49d3fccb860d5b359263fdb42a7e9894513a5812ac0290c77fa5bc4c0af3d54e141948f5dff6eaa0abb33d84b758ad5a0a2c7a4166856346b000f5a11c;0xaf5fd5148d7b79fad940feaefa6acf0e0500fc6de7cc1aebe8eef969c68c2d43336150b5753c87da3553ef813d6bf914ab35649b512c5350540f013238f8e0f91c;0x99a02651f38e2e075a01792ffaf59865374b7def5d9b2477e9586ec5aec33f1d00688d609ca76ff98b382321620f27e45a6b769f1316a6b67de4b909847cab4f1b"})
+Error: authentication needed: password or unlock
+    at web3.js:3143:20
+    at web3.js:6412:15
+    at web3.js:5081:36
+    at <anonymous>:1:1
+
+> personal.unlockAccount(eth.accounts[0])
+Unlock account 0xd4926d12b5a4a9c33411709242330914c8b0faec
+Passphrase: 
+true
+> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toWei(0.05,"ether"),dn:"www.bki.com",et:"2020/05/20",cas:"0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4",sig:"0xb22332bc49d3fccb860d5b359263fdb42a7e9894513a5812ac0290c77fa5bc4c0af3d54e141948f5dff6eaa0abb33d84b758ad5a0a2c7a4166856346b000f5a11c;0xaf5fd5148d7b79fad940feaefa6acf0e0500fc6de7cc1aebe8eef969c68c2d43336150b5753c87da3553ef813d6bf914ab35649b512c5350540f013238f8e0f91c;0x99a02651f38e2e075a01792ffaf59865374b7def5d9b2477e9586ec5aec33f1d00688d609ca76ff98b382321620f27e45a6b769f1316a6b67de4b909847cab4f1b"})
+INFO [05-13|10:31:19.708] Submitted transaction                    fullhash=0xcc7b11cecc4b009c2395f5973d5e208d378552b119f34cb75b171b2098bde0b6 recipient=0xF907670cC24Db89f9Ce2E30B63C40928e1Bb50C6
+"0xcc7b11cecc4b009c2395f5973d5e208d378552b119f34cb75b171b2098bde0b6"
+> txpool.status
+{
+  pending: 1,
+  queued: 0
+}
+> miner.start()
+INFO [05-13|10:32:03.718] Transaction pool price threshold updated price=18000000000
+INFO [05-13|10:32:03.718] Starting mining operation 
+null
+> INFO [05-13|10:32:03.719] Commit new mining work                   number=5 txs=1 uncles=0 elapsed=843.597µs
+INFO [05-13|10:32:03.774] Successfully sealed new block            number=5 hash=1f177c…316791
+INFO [05-13|10:32:03.775] 🔨 mined potential block                  number=5 hash=1f177c…316791
+INFO [05-13|10:32:03.776] Commit new mining work                   number=6 txs=0 uncles=0 elapsed=910.603µs
+INFO [05-13|10:32:03.776] Signed recently, must wait for others 
+> txpool.status
+{
+  pending: 0,
+  queued: 0
+}
+> eth.getCeritificateID(eth.accounts[0])
+"0xcc7b11cecc4b009c2395f5973d5e208d378552b119f34cb75b171b2098bde0b6"
+> eth.getTransaction("0xcc7b11cecc4b009c2395f5973d5e208d378552b119f34cb75b171b2098bde0b6")
+{
+  blockHash: "0x1f177c9fe141cd8cd5a9cbb6f8243a5bedb1500d63a216ced43d01f671316791",
+  blockNumber: 5,
+  cas: "0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4",
+  code: "BKI Transaction",
+  dn: "www.bki.com",
+  et: "2020/05/20",
+  from: "0xd4926d12b5a4a9c33411709242330914c8b0faec",
+  gas: 90000,
+  gasPrice: 18000000000,
+  hash: "0xcc7b11cecc4b009c2395f5973d5e208d378552b119f34cb75b171b2098bde0b6",
+  input: "0x",
+  nonce: 4,
+  r: "0x816be2f45e3a9d2e7ff2582c434e16c4c9095d53219984cce2a86e865486fc3f",
+  s: "0x6a754e6f1d3569773cb10e58dc7f2c64fea29c65a7f673e4d5a8e85632baf0a4",
+  sig: "0xb22332bc49d3fccb860d5b359263fdb42a7e9894513a5812ac0290c77fa5bc4c0af3d54e141948f5dff6eaa0abb33d84b758ad5a0a2c7a4166856346b000f5a11c;0xaf5fd5148d7b79fad940feaefa6acf0e0500fc6de7cc1aebe8eef969c68c2d43336150b5753c87da3553ef813d6bf914ab35649b512c5350540f013238f8e0f91c;0x99a02651f38e2e075a01792ffaf59865374b7def5d9b2477e9586ec5aec33f1d00688d609ca76ff98b382321620f27e45a6b769f1316a6b67de4b909847cab4f1b",
+  to: "0xf907670cc24db89f9ce2e30b63c40928e1bb50c6",
+  transactionIndex: 0,
+  v: "0x1185f",
+  value: 50000000000000000
+}
+> miner.stop
+function()
+> miner.stop()
+true
+> eth.changeCeritificate("www.bki.com","2021/06/20","0x19fc3c11237b89fd1162220303a685f197ae26f4,0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71,0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4")
+"0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4 --> 0x2a83353128b9189eae3b0e5484d4eb20641ca40179cd34d9263dbb475efdce6d75704341128c11c415e6e32e362e85b3cac9c0ff2772afe7445236f9775168a91b;0xc84a5df5180941b9fca2775acb5372db285b76d7ea9333feb073f7c5a41175aa061d621707b8f1f869df0666b7ed73eeb175cd4f8ae4747f99cf5e44183e97311c;0x0b629f3d80e1db6bfbc07ccab4ccd8f1e90e113c4ac563933d9c89c1f67233ed15c00eab102aff06210df8e233bbef34d7d726ac0356b8da99506cf1e8b58ec71c"
+> eth.verifyCeritificate("www.bki.com","2021/06/20","0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4 --> 0x2a83353128b9189eae3b0e5484d4eb20641ca40179cd34d9263dbb475efdce6d75704341128c11c415e6e32e362e85b3cac9c0ff2772afe7445236f9775168a91b;0xc84a5df5180941b9fca2775acb5372db285b76d7ea9333feb073f7c5a41175aa061d621707b8f1f869df0666b7ed73eeb175cd4f8ae4747f99cf5e44183e97311c;0x0b629f3d80e1db6bfbc07ccab4ccd8f1e90e113c4ac563933d9c89c1f67233ed15c00eab102aff06210df8e233bbef34d7d726ac0356b8da99506cf1e8b58ec71c")
+true
+> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toWei(0.05,"ether"),dn:"www.bki.com",et:"2021/06/20",cas:"0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4",sig:"0x2a83353128b9189eae3b0e5484d4eb20641ca40179cd34d9263dbb475efdce6d75704341128c11c415e6e32e362e85b3cac9c0ff2772afe7445236f9775168a91b;0xc84a5df5180941b9fca2775acb5372db285b76d7ea9333feb073f7c5a41175aa061d621707b8f1f869df0666b7ed73eeb175cd4f8ae4747f99cf5e44183e97311c;0x0b629f3d80e1db6bfbc07ccab4ccd8f1e90e113c4ac563933d9c89c1f67233ed15c00eab102aff06210df8e233bbef34d7d726ac0356b8da99506cf1e8b58ec71c")
+... }
+(anonymous): Line 2:1 Unexpected token } (and 3 more errors)
+> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toW> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toWei(0.05,"ether"),dn:"www.bki.com",et:"2021/06/20",cas:"0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4",sig:"0x2a83353128b9189eae3b0e5484d4eb20641ca40179cd34d9263dbb475efdce6d75704341128c11c415e6e32e362e85b3cac9c0ff2772afe7445236f9775168a91b;0xc84a5df5180941b9fca2775acb5372db285b76d7ea9333feb073f7c5a41175aa061d621707b8f1f869df0666b7ed73eeb175cd4f8ae4747f99cf5e44183e97311c;0x0b629f3d80e1db6bfbc07ccab4ccd8f1e90e113c4ac563933d9c89c1f67233ed15c00eab102aff06210df8e233bbef34d7d726ac0356b8da99506cf1e8b58ec71c"})
+Error: authentication needed: password or unlock
+    at web3.js:3143:20
+    at web3.js:6412:15
+    at web3.js:5081:36
+    at <anonymous>:1:1
+
+> personal.unlockAccount(eth.accounts[0])
+Unlock account 0xd4926d12b5a4a9c33411709242330914c8b0faec
+Passphrase: 
+true
+> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toWei(0.05,"ether"),dn:"www.bki.com",et:"2021/06/20",cas:"0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4",sig:"0x2a83353128b9189eae3b0e5484d4eb20641ca40179cd34d9263dbb475efdce6d75704341128c11c415e6e32e362e85b3cac9c0ff2772afe7445236f9775168a91b;0xc84a5df5180941b9fca2775acb5372db285b76d7ea9333feb073f7c5a41175aa061d621707b8f1f869df0666b7ed73eeb175cd4f8ae4747f99cf5e44183e97311c;0x0b629f3d80e1db6bfbc07ccab4ccd8f1e90e113c4ac563933d9c89c1f67233ed15c00eab102aff06210df8e233bbef34d7d726ac0356b8da99506cf1e8b58ec71c"})
+INFO [05-13|10:38:28.969] Submitted transaction                    fullhash=0xe780070721be634c03982110acd8e2e0cbdb58c3f33c744ff95aae43ee90fea3 recipient=0xF907670cC24Db89f9Ce2E30B63C40928e1Bb50C6
+"0xe780070721be634c03982110acd8e2e0cbdb58c3f33c744ff95aae43ee90fea3"
+> txpool.status
+{
+  pending: 1,
+  queued: 0
+}
+> miner.start()
+INFO [05-13|10:38:45.499] Transaction pool price threshold updated price=18000000000
+INFO [05-13|10:38:45.499] Starting mining operation 
+null
+> INFO [05-13|10:38:45.500] Commit new mining work                   number=6 txs=1 uncles=0 elapsed=606.215µs
+INFO [05-13|10:38:45.500] Signed recently, must wait for others 
+> miner.stop()
+true
+> miner.set
+miner.setEtherbase miner.setExtra miner.setGasPrice 
+> miner.setEtherbase(eth.accounts[1])
+true
+> personal.unlockAccount(eth.accounts[1])
+Unlock account 0x19fc3c11237b89fd1162220303a685f197ae26f4
+Passphrase: 
+true
+> miner.start()
+INFO [05-13|10:40:03.306] Transaction pool price threshold updated price=18000000000
+INFO [05-13|10:40:03.307] Starting mining operation 
+null
+> INFO [05-13|10:40:03.307] Commit new mining work                   number=6 txs=1 uncles=0 elapsed=612.61µs
+INFO [05-13|10:40:03.308] Successfully sealed new block            number=6 hash=1ddfea…58bdb5
+INFO [05-13|10:40:03.309] 🔨 mined potential block                  number=6 hash=1ddfea…58bdb5
+INFO [05-13|10:40:03.310] Commit new mining work                   number=7 txs=0 uncles=0 elapsed=939.954µs
+INFO [05-13|10:40:03.310] Signed recently, must wait for others 
+> miner.stop()
+true
+> eth.getCeritificateID(eth.accounts[0])
+"0xe780070721be634c03982110acd8e2e0cbdb58c3f33c744ff95aae43ee90fea3"
+> eth.getTransaction("0xe780070721be634c03982110acd8e2e0cbdb58c3f33c744ff95aae43ee90fea3")
+{
+  blockHash: "0x1ddfeaf56891d907fa92c04f61af97fe031847736fe6f0851af101893658bdb5",
+  blockNumber: 6,
+  cas: "0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4",
+  code: "BKI Transaction",
+  dn: "www.bki.com",
+  et: "2021/06/20",
+  from: "0xd4926d12b5a4a9c33411709242330914c8b0faec",
+  gas: 90000,
+  gasPrice: 18000000000,
+  hash: "0xe780070721be634c03982110acd8e2e0cbdb58c3f33c744ff95aae43ee90fea3",
+  input: "0x",
+  nonce: 5,
+  r: "0xfdbe1849ab802be28bbdf29c7d0ab884ced80cff373dd3d4daee48ebc10f35d2",
+  s: "0x14ef2ca05b67acd0552960299c3c7aa952bf135ee1677c34b4ece469e0840790",
+  sig: "0x2a83353128b9189eae3b0e5484d4eb20641ca40179cd34d9263dbb475efdce6d75704341128c11c415e6e32e362e85b3cac9c0ff2772afe7445236f9775168a91b;0xc84a5df5180941b9fca2775acb5372db285b76d7ea9333feb073f7c5a41175aa061d621707b8f1f869df0666b7ed73eeb175cd4f8ae4747f99cf5e44183e97311c;0x0b629f3d80e1db6bfbc07ccab4ccd8f1e90e113c4ac563933d9c89c1f67233ed15c00eab102aff06210df8e233bbef34d7d726ac0356b8da99506cf1e8b58ec71c",
+  to: "0xf907670cc24db89f9ce2e30b63c40928e1bb50c6",
+  transactionIndex: 0,
+  v: "0x1185f",
+  value: 50000000000000000
+}
+> eth.cancelCeritificate("www.bki.com","2021/06/20","0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4")
+"0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4 --> 0x2a83353128b9189eae3b0e5484d4eb20641ca40179cd34d9263dbb475efdce6d75704341128c11c415e6e32e362e85b3cac9c0ff2772afe7445236f9775168a91b"
+> eth.cancelCeritificate("www.bki.com","2021/06/20","0x19fc3c11237b89fd1162220303a685f197ae26f4,0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71,0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4")
+"0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4 --> 0x2a83353128b9189eae3b0e5484d4eb20641ca40179cd34d9263dbb475efdce6d75704341128c11c415e6e32e362e85b3cac9c0ff2772afe7445236f9775168a91b;0xc84a5df5180941b9fca2775acb5372db285b76d7ea9333feb073f7c5a41175aa061d621707b8f1f869df0666b7ed73eeb175cd4f8ae4747f99cf5e44183e97311c;0x0b629f3d80e1db6bfbc07ccab4ccd8f1e90e113c4ac563933d9c89c1f67233ed15c00eab102aff06210df8e233bbef34d7d726ac0356b8da99506cf1e8b58ec71c"
+> eth.verifyCeritificate("www.bki.com","2021/06/20","0x19fc3c11237b89fd1162220303a685f197ae26f4;0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71;0xe68bdef208aec4d3cb01c0b2f9e78a33f31e26d4 --> 0x2a83353128b9189eae3b0e5484d4eb20641ca40179cd34d9263dbb475efdce6d75704341128c11c415e6e32e362e85b3cac9c0ff2772afe7445236f9775168a91b;0xc84a5df5180941b9fca2775acb5372db285b76d7ea9333feb073f7c5a41175aa061d621707b8f1f869df0666b7ed73eeb175cd4f8ae4747f99cf5e44183e97311c;0x0b629f3d80e1db6bfbc07ccab4ccd8f1e90e113c4ac563933d9c89c1f67233ed15c00eab102aff06210df8e233bbef34d7d726ac0356b8da99506cf1e8b58ec71c")
+true
+> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toWei(0.05,"ether")})
+Error: authentication needed: password or unlock
+    at web3.js:3143:20
+    at web3.js:6412:15
+    at web3.js:5081:36
+    at <anonymous>:1:1
+
+> personal.unlockAccount(eth.accounts[0])
+Unlock account 0xd4926d12b5a4a9c33411709242330914c8b0faec
+Passphrase: 
+true
+> miner.setEtherbase(eth.accounts[2])
+true
+> personal.unlockAccount(eth.accounts[2])
+Unlock account 0xb8cc69a410b78fe74fc3b0094701fc059f2a9e71
+Passphrase: 
+true
+> eth.sendBKITransaction({from:eth.accounts[0],to:eth.accounts[4],value:web3.toWei(0.05,"ether")})
+INFO [05-13|10:47:24.550] Submitted transaction                    fullhash=0x1d263a3bdc4201730f1bfc950a152c2dbcaed57fbf33c3dd9c2a75b8bb6a7a3a recipient=0xF907670cC24Db89f9Ce2E30B63C40928e1Bb50C6
+"0x1d263a3bdc4201730f1bfc950a152c2dbcaed57fbf33c3dd9c2a75b8bb6a7a3a"
+> txpool.status
+{
+  pending: 1,
+  queued: 0
+}
+> miner.start()
+INFO [05-13|10:47:37.831] Transaction pool price threshold updated price=18000000000
+INFO [05-13|10:47:37.831] Starting mining operation 
+null
+> INFO [05-13|10:47:37.832] Commit new mining work                   number=7 txs=1 uncles=0 elapsed=653.495µs
+INFO [05-13|10:47:37.833] Successfully sealed new block            number=7 hash=876672…183b26
+INFO [05-13|10:47:37.833] 🔨 mined potential block                  number=7 hash=876672…183b26
+INFO [05-13|10:47:37.834] Commit new mining work                   number=8 txs=0 uncles=0 elapsed=861.412µs
+INFO [05-13|10:47:37.834] Signed recently, must wait for others 
+> miner.stop()
+true
+> txpool.status
+{
+  pending: 0,
+  queued: 0
+}
+> eth.getCeritificateID(eth.accounts[0])
+"0x1d263a3bdc4201730f1bfc950a152c2dbcaed57fbf33c3dd9c2a75b8bb6a7a3a"
+> eth.getTransaction("0x1d263a3bdc4201730f1bfc950a152c2dbcaed57fbf33c3dd9c2a75b8bb6a7a3a")
+{
+  blockHash: "0x8766727c67f1600847f7e311b24d79185f6c545e3a8efe693aa5a2d887183b26",
+  blockNumber: 7,
+  cas: "",
+  code: "BKI Transaction",
+  dn: "",
+  et: "",
+  from: "0xd4926d12b5a4a9c33411709242330914c8b0faec",
+  gas: 90000,
+  gasPrice: 18000000000,
+  hash: "0x1d263a3bdc4201730f1bfc950a152c2dbcaed57fbf33c3dd9c2a75b8bb6a7a3a",
+  input: "0x",
+  nonce: 6,
+  r: "0x77f81ea49175bd2368e2e4bd731c5764aafc47eacb2c9ddd7447af9953e591ef",
+  s: "0x22a3d8045d78b0f4a90e8c9c23bd4108a48e582f1bebbee1109e183ae73c1f2",
+  sig: "",
+  to: "0xf907670cc24db89f9ce2e30b63c40928e1bb50c6",
+  transactionIndex: 0,
+  v: "0x11860",
+  value: 50000000000000000
+}
+> 
+sdu@ksw:~/go/src/github.com/ethereum/bki$ go version
+go version go1.10 linux/amd64
+sdu@ksw:~/go/src/github.com/ethereum/bki$ go env
+GOARCH="amd64"
+GOBIN=""
+GOCACHE="/home/sdu/.cache/go-build"
+GOEXE=""
+GOHOSTARCH="amd64"
+GOHOSTOS="linux"
+GOOS="linux"
+GOPATH="/home/sdu/go"
+GORACE=""
+GOROOT="/usr/local/go"
+GOTMPDIR=""
+GOTOOLDIR="/usr/local/go/pkg/tool/linux_amd64"
+GCCGO="gccgo"
+CC="gcc"
+CXX="g++"
+CGO_ENABLED="1"
+CGO_CFLAGS="-g -O2"
+CGO_CPPFLAGS=""
+CGO_CXXFLAGS="-g -O2"
+CGO_FFLAGS="-g -O2"
+CGO_LDFLAGS="-g -O2"
+PKG_CONFIG="pkg-config"
+GOGCCFLAGS="-fPIC -m64 -pthread -fmessage-length=0 -fdebug-prefix-map=/tmp/go-build869497811=/tmp/go-build -gno-record-gcc-switches"
+sdu@ksw:~/go/src/github.com/ethereum/bki$ geth version
+Geth
+Version: 1.8.13-unstable
+Architecture: amd64
+Protocol Versions: [63 62]
+Network Id: 1
+Go Version: go1.10
+Operating System: linux
+GOPATH=/home/sdu/go
+GOROOT=/usr/local/go
+sdu@ksw:~/go/src/github.com/ethereum/bki$ node version
+internal/modules/cjs/loader.js:584
+    throw err;
+    ^
+
+Error: Cannot find module '/home/sdu/go/src/github.com/ethereum/bki/version'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:582:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:508:25)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:754:12)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:622:3)
+sdu@ksw:~/go/src/github.com/ethereum/bki$ node -v
+v10.15.3
+sdu@ksw:~/go/src/github.com/ethereum/bki$ npm -v
+6.4.1
+
